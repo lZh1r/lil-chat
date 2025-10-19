@@ -1,13 +1,19 @@
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import {createBrowserRouter, RouterProvider} from "react-router";
-import Home from "@/Home.tsx";
 import {ThemeProvider} from "@/components/theme-provider.tsx";
+import Layout from "@/components/Layout.tsx";
+import Home from "@/Home.tsx";
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        Component: Home,
+        Component: Layout,
+        children: [
+            {
+                path: "/",
+                Component: Home
+            }
+        ]
     }
 ]);
 
