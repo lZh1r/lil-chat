@@ -9,7 +9,7 @@ export default function Layout() {
         <>
             <SidebarProvider>
                 <AppSidebar/>
-                <Button className={"z-10 m-3"} variant={"outline"} size={"icon-lg"}>
+                <Button asChild className={"z-10 m-3"} variant={"outline"} size={"icon-lg"}>
                     <SidebarTrigger/>
                 </Button>
                 <div className={"absolute right-0 p-3 flex space-x-3"}>
@@ -19,8 +19,6 @@ export default function Layout() {
                     </Button>
                 </div>
             </SidebarProvider>
-
         </>
-
     );
 }
