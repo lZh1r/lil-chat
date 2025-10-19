@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {User} from "lucide-react";
 import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import AppSidebar from "@/components/AppSidebar.tsx";
+import {Outlet} from "react-router";
 
 export default function Layout() {
     return (
@@ -18,6 +19,7 @@ export default function Layout() {
                         <User className={"aspect-square w-8 h-8"}/>
                     </Button>
                 </div>
+                <Outlet/>
             </SidebarProvider>
         </>
     );
