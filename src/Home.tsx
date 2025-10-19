@@ -1,9 +1,10 @@
+import {ModeToggle} from "@/components/mode-toggle.tsx";
 
 function Home() {
 
     return(
         <div>
-            Mega app
+            <ModeToggle/>
         </div>
     );
 }
