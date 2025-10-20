@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar.tsx";
 import {ChevronRight} from "lucide-react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
-import AppSidebarTopGroup from "@/components/AppSidebarTopGroup.tsx";
+import AppSidebarTopGroup from "@/components/layout/AppSidebarTopGroup.tsx";
 
 export default function AppSidebar() {
 

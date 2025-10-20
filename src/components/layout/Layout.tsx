@@ -2,7 +2,7 @@ import {ModeToggle} from "@/components/mode-toggle.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {User} from "lucide-react";
 import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
-import AppSidebar from "@/components/AppSidebar.tsx";
+import AppSidebar from "@/components/layout/AppSidebar.tsx";
 import {Outlet} from "react-router";
 
 export default function Layout() {
