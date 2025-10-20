@@ -1,9 +1,9 @@
 import {ModeToggle} from "@/components/mode-toggle.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {User} from "lucide-react";
 import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import AppSidebar from "@/components/layout/AppSidebar.tsx";
 import {Outlet} from "react-router";
+import ProfileMenu from "@/components/layout/ProfileMenu.tsx";
 
 export default function Layout() {
     return (
@@ -15,9 +15,7 @@ export default function Layout() {
                 </Button>
                 <div className={"absolute right-0 p-3 flex space-x-3"}>
                     <ModeToggle/>
-                    <Button size={"icon-lg"} variant={"outline"}>
-                        <User className={"aspect-square w-8 h-8"}/>
-                    </Button>
+                    <ProfileMenu/>
                 </div>
                 <Outlet/>
             </SidebarProvider>
