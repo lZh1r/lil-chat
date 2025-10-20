@@ -9,11 +9,15 @@ import {
     SidebarMenuItem,
     SidebarMenuSub,
     SidebarMenuSubButton,
+    useSidebar,
 } from "@/components/ui/sidebar.tsx";
-import {ChevronRight, MessageCirclePlus} from "lucide-react";
+import {ChevronRight} from "lucide-react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
+import AppSidebarTopGroup from "@/components/AppSidebarTopGroup.tsx";
 
 export default function AppSidebar() {
+
+    const sidebarState = useSidebar();
 
     return (
         <Sidebar collapsible={"icon"}>
@@ -27,16 +31,7 @@ export default function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuButton className={"cursor-pointer"}>
-                                <MessageCirclePlus/>
-                                <span>New Chat</span>
-                            </SidebarMenuButton>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                <AppSidebarTopGroup sidebarOpen={sidebarState.open}/>
                 <Collapsible defaultOpen className="group/collapsible">
                     <SidebarGroup className={"group-data-[state=collapsed]:hidden"}>
                             <SidebarGroupContent>
