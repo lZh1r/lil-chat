@@ -12,7 +12,7 @@ export default function ChatInput() {
     const [model, setModel] = useState("auto");
 
     return (
-        <InputGroup className={"w-1/2 place-self-center rounded-2xl"}>
+        <InputGroup className={"w-1/2 place-self-center rounded-2xl pt-1"}>
             <InputGroupTextarea placeholder={"Ask your hot local llm mommy..."}/>
             <InputGroupAddon align={"block-end"}>
                 <InputGroupButton
