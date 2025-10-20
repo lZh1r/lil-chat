@@ -14,10 +14,15 @@ import {
 import {ChevronRight} from "lucide-react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
 import AppSidebarTopGroup from "@/components/layout/AppSidebarTopGroup.tsx";
+import {useEffect} from "react";
 
 export default function AppSidebar() {
 
     const sidebarState = useSidebar();
+
+    useEffect(() => {
+        localStorage.setItem("sidebar_state", String(sidebarState.open));
+    }, [sidebarState.open]);
 
     return (
         <Sidebar collapsible={"icon"}>

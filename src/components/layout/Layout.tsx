@@ -6,9 +6,10 @@ import {Outlet} from "react-router";
 import ProfileMenu from "@/components/layout/ProfileMenu.tsx";
 
 export default function Layout() {
+
     return (
         <>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={localStorage.getItem("sidebar_state") === "true"}>
                 <AppSidebar/>
                 <Button asChild className={"z-10 m-3"} variant={"outline"} size={"icon-lg"}>
                     <SidebarTrigger/>
