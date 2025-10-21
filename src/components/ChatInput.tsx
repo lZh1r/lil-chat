@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {useState} from "react";
 
-export default function ChatInput() {
+export default function ChatInput({className}: {className: string}) {
     const [model, setModel] = useState("auto");
 
     return (
-        <InputGroup className={"w-1/2 place-self-center rounded-2xl pt-1"}>
+        <InputGroup className={`${className} rounded-2xl pt-1`}>
             <InputGroupTextarea placeholder={"Ask your hot local llm mommy..."}/>
             <InputGroupAddon align={"block-end"}>
                 <InputGroupButton
