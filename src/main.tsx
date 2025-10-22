@@ -1,9 +1,10 @@
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import {createBrowserRouter, RouterProvider} from "react-router";
+import {createBrowserRouter, redirect, RouterProvider} from "react-router";
 import {ThemeProvider} from "@/components/theme-provider.tsx";
 import Layout from "@/components/layout/Layout.tsx";
 import Home from "@/Home.tsx";
+import Chat from "@/Chat.tsx";
 
 const router = createBrowserRouter([
     {
@@ -12,6 +13,19 @@ const router = createBrowserRouter([
             {
                 path: "",
                 Component: Home
+            },
+            {
+                path: "chat/:chatId",
+                loader: ({params}) => {
+                    return params;
+                },
+                Component: Chat
+            },
+            {
+                path: "chat",
+                loader: () => {
+                    throw redirect("/");
+                }
             }
         ]
     }
