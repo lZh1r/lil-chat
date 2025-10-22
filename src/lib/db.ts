@@ -1,16 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-
-export interface Chat {
-    id: string,
-    name: string,
-}
-
-export interface ChatMessage {
-    id: number,
-    chatId: string,
-    role: "system" | "user" | "assistant" | "tool",
-    content: string,
-}
+import type {Chat, ChatMessage} from "@/lib/types.ts";
 
 export const db = new Dexie("ChatDatabase") as Dexie & {
     chats: EntityTable<

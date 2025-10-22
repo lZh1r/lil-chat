@@ -1,8 +1,9 @@
-import type {ChatMessage} from "@/lib/db.ts";
+
 import {clsx} from "clsx";
 import Markdown from "react-markdown";
+import type {ChatMessage, ModelMessage} from "@/lib/types.ts";
 
-export default function MessageBox({message}: {message: ChatMessage}) {
+export default function MessageBox({message}: {message: ChatMessage | ModelMessage}) {
     return (
         <div
             className={clsx(

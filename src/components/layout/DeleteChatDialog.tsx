@@ -5,8 +5,9 @@ import {
     AlertDialogFooter,
     AlertDialogHeader
 } from "@/components/ui/alert-dialog.tsx";
-import {type Chat, db} from "@/lib/db.ts";
+import {db} from "@/lib/db.ts";
 import {useNavigate} from "react-router";
+import type {Chat} from "@/lib/types.ts";
 
 export default function DeleteChatDialog(
     {
