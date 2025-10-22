@@ -8,12 +8,30 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {useState} from "react";
 
-export default function ChatInput({className}: {className: string}) {
+export default function ChatInput(
+    {
+        className,
+        sendMessage
+    }: {
+        className: string,
+        sendMessage: (msg: string) => void
+    }
+) {
     const [model, setModel] = useState("auto");
+    const [message, setMessage] = useState("");
 
     return (
         <InputGroup className={`${className} rounded-2xl pt-1`}>
-            <InputGroupTextarea placeholder={"Ask your hot local llm mommy..."}/>
+            <InputGroupTextarea
+                onKeyDown={(e) => {
+                    if (e.shiftKey && e.key === "Enter") return;
+                    if (e.key === "Enter") {
+                        if (message.trim().length > 0) sendMessage(message);
+                    }
+                }}
+                value={message}
+                onChange={(e) => setMessage(e.currentTarget.value)}
+                placeholder={"Ask your hot local llm mommy..."}/>
             <InputGroupAddon align={"block-end"}>
                 <InputGroupButton
                     size={"icon-sm"}
@@ -52,6 +70,9 @@ export default function ChatInput({className}: {className: string}) {
                     size={"icon-sm"}
                     variant={"default"}
                     className={"rounded-full ml-auto"}
+                    onClick={() => {
+                        if (message.trim().length > 0) sendMessage(message);
+                    }}
                 >
                     <ArrowUp/>
                 </InputGroupButton>
