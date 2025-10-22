@@ -26,7 +26,10 @@ export default function ChatInput(
                 onKeyDown={(e) => {
                     if (e.shiftKey && e.key === "Enter") return;
                     if (e.key === "Enter") {
-                        if (message.trim().length > 0) sendMessage(message);
+                        if (message.trim().length > 0) {
+                            sendMessage(message);
+                            setMessage("");
+                        }
                     }
                 }}
                 value={message}
@@ -71,7 +74,10 @@ export default function ChatInput(
                     variant={"default"}
                     className={"rounded-full ml-auto"}
                     onClick={() => {
-                        if (message.trim().length > 0) sendMessage(message);
+                        if (message.trim().length > 0) {
+                            sendMessage(message);
+                            setMessage("");
+                        }
                     }}
                 >
                     <ArrowUp/>

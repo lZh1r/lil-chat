@@ -11,15 +11,27 @@ export default function Chat() {
         return db.messages.where("chatId").equals(params.chatId!).toArray();
     }, [params, db.messages]);
 
+    async function sendMessage(message: string) {
+        try {
+            await db.messages.add({
+                chatId: params.chatId!,
+                role: "user",
+                content: message
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     return (
         <div className={"h-screen w-full flex flex-col justify-between"}>
-            <div className={"w-1/2 p-4 h-full place-self-center"}>
+            <div className={"w-1/2 p-4 h-full place-self-center space-y-2"}>
                 {
                     messages?.map(msg => <MessageBox key={msg.id} message={msg}/>)
                 }
             </div>
             <div className={"p-4 w-1/2 place-self-center"}>
-                <ChatInput sendMessage={(_) => {}} className={"place-self-center w-full"}/>
+                <ChatInput sendMessage={sendMessage} className={"place-self-center w-full"}/>
             </div>
         </div>
     );
