@@ -18,7 +18,7 @@ import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/
 import AppSidebarTopGroup from "@/components/layout/AppSidebarTopGroup.tsx";
 import {useEffect} from "react";
 import {useLiveQuery} from "dexie-react-hooks";
-import {db} from "@/db.ts";
+import {db} from "@/lib/db.ts";
 import {Link} from "react-router";
 import {AlertDialog, AlertDialogTrigger} from "@/components/ui/alert-dialog.tsx";
 import DeleteChatDialog from "@/components/layout/DeleteChatDialog.tsx";

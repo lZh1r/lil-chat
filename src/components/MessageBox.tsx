@@ -1,4 +1,4 @@
-import type {ChatMessage} from "@/db.ts";
+import type {ChatMessage} from "@/lib/db.ts";
 import {clsx} from "clsx";
 import Markdown from "react-markdown";
 

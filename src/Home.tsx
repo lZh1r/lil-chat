@@ -1,5 +1,5 @@
 import ChatInput from "@/components/ChatInput.tsx";
-import {db} from "@/db.ts";
+import {db} from "@/lib/db.ts";
 import {useNavigate} from "react-router";
 
 function Home() {
