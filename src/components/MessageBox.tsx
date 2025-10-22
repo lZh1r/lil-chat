@@ -1,5 +1,6 @@
 import type {ChatMessage} from "@/db.ts";
 import {clsx} from "clsx";
+import Markdown from "react-markdown";
 
 export default function MessageBox({message}: {message: ChatMessage}) {
     return (
@@ -12,7 +13,7 @@ export default function MessageBox({message}: {message: ChatMessage}) {
                 "text-foreground p-2 rounded-2xl w-fit"
             )}
         >
-            <p>{message.content}</p>
+            <Markdown>{message.content}</Markdown>
         </div>
     );
 }
