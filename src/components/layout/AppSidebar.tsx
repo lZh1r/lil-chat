@@ -19,23 +19,16 @@ import AppSidebarTopGroup from "@/components/layout/AppSidebarTopGroup.tsx";
 import {useEffect} from "react";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "@/db.ts";
-import {Link, useNavigate} from "react-router";
+import {Link} from "react-router";
+import {AlertDialog, AlertDialogTrigger} from "@/components/ui/alert-dialog.tsx";
+import DeleteChatDialog from "@/components/layout/DeleteChatDialog.tsx";
 
 export default function AppSidebar() {
 
-    const navigate = useNavigate();
     const sidebarState = useSidebar();
     const chats = useLiveQuery(() => {
         return db.chats.toArray();
     }, [db.chats]);
-
-    async function deleteChat(chatId: string) {
-        await db.chats.delete(chatId);
-        await db.messages.where("chatId").equals(chatId).delete();
-        if (window.location.href.includes(chatId)) {
-            navigate("/");
-        }
-    }
 
     useEffect(() => {
         localStorage.setItem("sidebar_state", String(sidebarState.open));
@@ -76,11 +69,15 @@ export default function AppSidebar() {
                                                                 </span>
                                                             </Link>
                                                         </SidebarMenuSubButton>
-                                                        <SidebarMenuAction
-                                                            className={"p-1 w-fit h-fit static place-self-center"}
-                                                            onClick={() => deleteChat(chat.id)}>
-                                                            <Trash/>
-                                                        </SidebarMenuAction>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <SidebarMenuAction
+                                                                    className={"p-1 w-fit h-fit static place-self-center"}>
+                                                                    <Trash/>
+                                                                </SidebarMenuAction>
+                                                            </AlertDialogTrigger>
+                                                            <DeleteChatDialog chat={chat}/>
+                                                        </AlertDialog>
                                                     </SidebarMenuSubItem>
                                                 )
                                             }
