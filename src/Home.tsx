@@ -11,20 +11,12 @@ function Home() {
             let chatId = crypto.randomUUID();
 
             while (await db.chats.get({id: chatId})) chatId = crypto.randomUUID();
-
-            await db.transaction("rw", [db.chats, db.messages], async () => {
-                await db.chats.add({
-                    id: chatId,
-                    name: `Chat ${chatId}`
-                });
-                await db.messages.add({
-                    chatId,
-                    role: "user",
-                    content: message
-                });
+            await db.chats.add({
+                id: chatId,
+                name: `Chat ${chatId}`
             });
 
-            navigate(`/chat/${chatId}`);
+            navigate(`/chat/${chatId}?initial=${message}`);
 
         } catch (e) {
             console.log(e);

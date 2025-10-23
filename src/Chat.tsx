@@ -1,4 +1,4 @@
-import {useParams} from "react-router";
+import {useParams, useSearchParams} from "react-router";
 import ChatInput from "@/components/ChatInput.tsx";
 import {db} from "@/lib/db.ts";
 import {useLiveQuery} from "dexie-react-hooks";
@@ -7,6 +7,7 @@ import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useEffect, useRef, useState} from "react";
 
 export default function Chat() {
+    const [searchParams, _] = useSearchParams();
     const params = useParams<{chatId: string}>();
     const [pendingMessage, setPendingMessage] = useState<null | ModelMessage>(null);
     const scrollAreaRef = useRef<null | HTMLDivElement>(null);
@@ -30,7 +31,7 @@ export default function Chat() {
     }
 
     async function sendRequest(message: string) {
-        const context = messages! as ModelMessage[];
+        const context = (messages ?? []) as ModelMessage[];
         context.push({
             role: "user",
             content: message,
@@ -72,12 +73,18 @@ export default function Chat() {
         scrollAreaRef.current!.scrollTop = scrollAreaRef.current!.scrollHeight;
     }, [messages]);
 
+    useEffect(() => {
+        if (!messages || messages.length === 0) {
+            sendMessage(searchParams.get("initial")!);
+        }
+    }, []);
+
     return (
         <div className={"h-screen w-full flex flex-col justify-between p-2"}>
             <div
                 ref={scrollAreaRef}
                 className={`
-                    w-2/3 max-w-2/3 p-4 h-[85vh] place-self-center space-y-2 wrap-anywhere overflow-y-scroll
+                    w-2/3 max-w-2/3 p-4 max-h-[85vh] place-self-center space-y-2 wrap-anywhere overflow-y-scroll
                     [&::-webkit-scrollbar-thumb]:hover:bg-white [&::-webkit-scrollbar-thumb]:transition-all
                     [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full 
                     [&::-webkit-scrollbar-track]:bg-stone-900 [&::-webkit-scrollbar-thumb]:rounded-full 
