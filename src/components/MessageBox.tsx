@@ -11,7 +11,7 @@ export default function MessageBox({message}: {message: ChatMessage | ModelMessa
                 {"place-self-start": message.role === "assistant"},
                 {"place-self-center": message.role === "system"},
                 {"hidden": message.role === "tool"},
-                "text-foreground p-2 rounded-2xl w-fit"
+                "text-foreground p-2 rounded-2xl w-fit max-w-[100%]"
             )}
         >
             <Markdown>{message.content}</Markdown>
