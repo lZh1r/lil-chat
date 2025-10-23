@@ -5,7 +5,6 @@ import {
     SidebarGroupContent,
     SidebarHeader,
     SidebarMenu,
-    SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
@@ -13,14 +12,13 @@ import {
     SidebarMenuSubItem,
     useSidebar,
 } from "@/components/ui/sidebar.tsx";
-import {ChevronRight, Trash} from "lucide-react";
+import {ChevronRight} from "lucide-react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
 import AppSidebarTopGroup from "@/components/layout/AppSidebarTopGroup.tsx";
 import {useEffect} from "react";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "@/lib/db.ts";
 import {Link} from "react-router";
-import {AlertDialog, AlertDialogTrigger} from "@/components/ui/alert-dialog.tsx";
 import DeleteChatDialog from "@/components/layout/DeleteChatDialog.tsx";
 
 export default function AppSidebar() {
@@ -69,15 +67,7 @@ export default function AppSidebar() {
                                                                 </span>
                                                             </Link>
                                                         </SidebarMenuSubButton>
-                                                        <AlertDialog>
-                                                            <AlertDialogTrigger asChild>
-                                                                <SidebarMenuAction
-                                                                    className={"p-1 w-fit h-fit static place-self-center"}>
-                                                                    <Trash/>
-                                                                </SidebarMenuAction>
-                                                            </AlertDialogTrigger>
-                                                            <DeleteChatDialog chat={chat}/>
-                                                        </AlertDialog>
+                                                        <DeleteChatDialog chat={chat}/>
                                                     </SidebarMenuSubItem>
                                                 )
                                             }

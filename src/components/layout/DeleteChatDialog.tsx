@@ -1,13 +1,18 @@
 import {
+    AlertDialog,
     AlertDialogAction,
     AlertDialogCancel,
-    AlertDialogContent, AlertDialogDescription,
+    AlertDialogContent,
+    AlertDialogDescription,
     AlertDialogFooter,
-    AlertDialogHeader
+    AlertDialogTitle,
+    AlertDialogTrigger
 } from "@/components/ui/alert-dialog.tsx";
 import {db} from "@/lib/db.ts";
 import {useNavigate} from "react-router";
 import type {Chat} from "@/lib/types.ts";
+import {SidebarMenuAction} from "@/components/ui/sidebar.tsx";
+import {Trash} from "lucide-react";
 
 export default function DeleteChatDialog(
     {
@@ -27,17 +32,25 @@ export default function DeleteChatDialog(
     }
 
     return(
-        <AlertDialogContent>
-            <AlertDialogHeader className={"flex line-clamp-1"}>
-                Deleting <q>{chat.name}</q>
-            </AlertDialogHeader>
-            <AlertDialogDescription>
-                This action cannot be undone.
-            </AlertDialogDescription>
-            <AlertDialogFooter>
-                <AlertDialogCancel>Close</AlertDialogCancel>
-                <AlertDialogAction onClick={() => deleteChat(chat.id)}>Delete</AlertDialogAction>
-            </AlertDialogFooter>
-        </AlertDialogContent>
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <SidebarMenuAction
+                    className={"p-1 w-fit h-fit static place-self-center"}>
+                    <Trash/>
+                </SidebarMenuAction>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogTitle className={"flex line-clamp-2"}>
+                    Do you want to delete <q>{chat.name}</q>?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                    This action cannot be undone.
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Close</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => deleteChat(chat.id)}>Delete</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 }
