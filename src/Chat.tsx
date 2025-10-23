@@ -74,10 +74,10 @@ export default function Chat() {
     }, [messages]);
 
     useEffect(() => {
-        if (!messages || messages.length === 0) {
+        if (messages?.length === 0) {
             sendMessage(searchParams.get("initial")!);
         }
-    }, []);
+    }, [messages, searchParams, sendMessage]);
 
     return (
         <div className={"h-screen w-full flex flex-col justify-between p-2"}>
