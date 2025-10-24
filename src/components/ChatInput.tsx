@@ -45,6 +45,7 @@ export default function ChatInput(
                 placeholder={"Ask your hot local llm mommy..."}/>
             <InputGroupAddon align={"block-end"}>
                 <InputGroupButton
+                    aria-label={"Attach files"}
                     size={"icon-sm"}
                     variant={"outline"}
                     className={"rounded-full"}
@@ -78,6 +79,7 @@ export default function ChatInput(
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <InputGroupButton
+                    aria-label={"Send message"}
                     size={"icon-sm"}
                     variant={"default"}
                     className={"rounded-full ml-auto"}

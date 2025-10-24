@@ -33,7 +33,7 @@ export default function MessageBox(
             {message.role === "assistant" && <div className={"flex space-x-2 mt-2"}>
                 <Popover>
                     <PopoverTrigger asChild>
-                        <Button variant={"ghost"} size={"icon"}>
+                        <Button aria-label={"Message actions"} variant={"ghost"} size={"icon"}>
                             <Ellipsis/>
                         </Button>
                     </PopoverTrigger>
@@ -45,7 +45,7 @@ export default function MessageBox(
                     responseDetails &&
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button variant={"ghost"} size={"icon"}>
+                            <Button aria-label={"Message statistics"} variant={"ghost"} size={"icon"}>
                                 <ChartBar/>
                             </Button>
                         </PopoverTrigger>

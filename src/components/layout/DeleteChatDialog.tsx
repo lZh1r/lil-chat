@@ -35,6 +35,7 @@ export default function DeleteChatDialog(
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 <SidebarMenuAction
+                    aria-label={"Delete chat"}
                     className={"p-1 w-fit h-fit static place-self-center"}>
                     <Trash/>
                 </SidebarMenuAction>

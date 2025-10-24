@@ -7,7 +7,7 @@ export default function ProfileMenu() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button size={"icon-lg"} variant={"outline"}>
+                <Button aria-label={"Open profile menu"} size={"icon-lg"} variant={"outline"}>
                     <User className={"aspect-square w-8 h-8"}/>
                 </Button>
             </PopoverTrigger>
