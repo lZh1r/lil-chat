@@ -11,9 +11,11 @@ import {useState} from "react";
 export default function ChatInput(
     {
         className,
+        inProgress,
         sendMessage
     }: {
         className: string,
+        inProgress: boolean,
         sendMessage: (msg: string) => void
     }
 ) {
@@ -31,7 +33,7 @@ export default function ChatInput(
                 `}
                 id={"message-input"}
                 onKeyDown={(e) => {
-                    if (e.shiftKey && e.key === "Enter") return;
+                    if ((e.shiftKey && e.key === "Enter") || inProgress) return;
                     if (e.key === "Enter") {
                         e.preventDefault();
                         if (message.trim().length > 0) {
@@ -80,6 +82,7 @@ export default function ChatInput(
                 </DropdownMenu>
                 <InputGroupButton
                     aria-label={"Send message"}
+                    disabled={inProgress}
                     size={"icon-sm"}
                     variant={"default"}
                     className={"rounded-full ml-auto"}

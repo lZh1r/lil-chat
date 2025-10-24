@@ -10,12 +10,14 @@ export default function Chat() {
     const [searchParams, _] = useSearchParams();
     const params = useParams<{chatId: string}>();
     const [pendingMessage, setPendingMessage] = useState<null | ModelMessage>(null);
+    const [inProgress, setInProgress] = useState(false);
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(params.chatId!).toArray();
     }, [params, db.messages]);
 
     const sendRequest = useCallback(async (message: string) => {
+        setInProgress(true);
         const model = "phi4-mini:latest";
         const context = (messages ?? []) as ModelMessage[];
         context.push({
@@ -65,7 +67,7 @@ export default function Chat() {
                 eval_duration: intermediateResult?.eval_duration
             });
         });
-
+        setInProgress(false);
         setPendingMessage(null);
     }, [messages, params.chatId]);
 
@@ -107,7 +109,7 @@ export default function Chat() {
                 {pendingMessage && <MessageBox message={pendingMessage}/>}
             </div>
             <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0"}>
-                <ChatInput sendMessage={sendMessage} className={"place-self-center w-full"}/>
+                <ChatInput inProgress={inProgress} sendMessage={sendMessage} className={"place-self-center w-full"}/>
             </div>
         </div>
     );
