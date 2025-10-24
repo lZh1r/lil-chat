@@ -7,7 +7,7 @@ export default function MessageBox({message}: {message: ChatMessage | ModelMessa
     return (
         <div
             className={clsx(
-                {"place-self-end bg-stone-800": message.role === "user"},
+                {"place-self-end bg-stone-800 text-white": message.role === "user"},
                 {"place-self-start": message.role === "assistant"},
                 {"place-self-center": message.role === "system"},
                 {"hidden": message.role === "tool"},
