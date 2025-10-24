@@ -1,12 +1,13 @@
-
 import {clsx} from "clsx";
 import Markdown from "react-markdown";
 import type {ChatMessage, ModelMessage} from "@/lib/types.ts";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "@/lib/db.ts";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {ChartBar, Ellipsis} from "lucide-react";
+import MoreActionsButton from "@/components/chat/MoreActionsButton.tsx";
+import StatsButton from "@/components/chat/StatsButton.tsx";
+import RedoButton from "@/components/chat/RedoButton.tsx";
+import BranchButton from "@/components/chat/BranchButton.tsx";
+import CopyButton from "@/components/chat/CopyButton.tsx";
 
 export default function MessageBox(
     {
@@ -30,33 +31,12 @@ export default function MessageBox(
             )}
         >
             <Markdown>{message.content}</Markdown>
-            {message.role === "assistant" && <div className={"flex space-x-2 mt-2"}>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button aria-label={"Message actions"} variant={"ghost"} size={"icon"}>
-                            <Ellipsis/>
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className={"text-sm space-y-2 flex flex-col w-fit"}>
-                        <p>Stuff</p>
-                    </PopoverContent>
-                </Popover>
-                {
-                    responseDetails &&
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button aria-label={"Message statistics"} variant={"ghost"} size={"icon"}>
-                                <ChartBar/>
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className={"text-sm space-y-2 flex flex-col w-fit"}>
-                            <p>Output tokens: {responseDetails.eval_count}</p>
-                            <p>Time elapsed: {(responseDetails.total_duration! / 10 ** 9).toFixed(2)} s</p>
-                            <p>Tokens per
-                                second: {(responseDetails.eval_count! / responseDetails.eval_duration! * 10 ** 9).toFixed(2)}</p>
-                        </PopoverContent>
-                    </Popover>
-                }
+            {message.role === "assistant" && <div className={"flex space-x-1 mt-2"}>
+                <MoreActionsButton/>
+                <CopyButton text={message.content}/>
+                <RedoButton/>
+                <BranchButton/>
+                {responseDetails && <StatsButton responseDetails={responseDetails!}/>}
             </div>}
 
         </div>
