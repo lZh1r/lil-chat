@@ -1,8 +1,8 @@
 import {useParams, useSearchParams} from "react-router";
-import ChatInput from "@/components/ChatInput.tsx";
+import ChatInput from "@/components/chat/ChatInput.tsx";
 import {db} from "@/lib/db.ts";
 import {useLiveQuery} from "dexie-react-hooks";
-import MessageBox from "@/components/MessageBox.tsx";
+import MessageBox from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useState} from "react";
 

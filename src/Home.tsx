@@ -1,4 +1,4 @@
-import ChatInput from "@/components/ChatInput.tsx";
+import ChatInput from "@/components/chat/ChatInput.tsx";
 import {db} from "@/lib/db.ts";
 import {useNavigate} from "react-router";
 
