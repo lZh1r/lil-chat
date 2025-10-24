@@ -14,7 +14,7 @@ export default function Layout() {
         <>
             <SidebarProvider open={open} onOpenChange={setOpen} defaultOpen={localStorage.getItem("sidebar_state") === "true"}>
                 <AppSidebar/>
-                <Button asChild className={`${open && "translate-x-[13rem]"} left-[3rem] z-10 m-3 absolute`} variant={"outline"} size={"icon-lg"}>
+                <Button asChild className={`${open && "md:translate-x-[13rem]"} md:left-[3rem] z-10 m-3 md:absolute`} variant={"outline"} size={"icon-lg"}>
                     <SidebarTrigger/>
                 </Button>
                 <div className={"absolute right-0 p-3 flex space-x-3"}>
