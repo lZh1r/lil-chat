@@ -87,10 +87,9 @@ export default function Chat() {
                 className={`
                     w-2/3 max-w-2/3 p-4 max-h-[85vh] place-self-center space-y-2 wrap-anywhere overflow-y-scroll
                     [&::-webkit-scrollbar-thumb]:hover:bg-white [&::-webkit-scrollbar-thumb]:transition-all
-                    [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full 
-                    [&::-webkit-scrollbar-track]:dark:bg-stone-900 [&::-webkit-scrollbar-track]:bg-stone-300
-                    [&::-webkit-scrollbar-thumb]:rounded-full
-                    [&::-webkit-scrollbar-thumb]:darK:bg-stone-800 [&::-webkit-scrollbar-thumb]:bg-stone-400
+                    [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full
+                    dark:[&::-webkit-scrollbar-track]:bg-stone-900 [&::-webkit-scrollbar-track]:bg-stone-300
+                    dark:[&::-webkit-scrollbar-thumb]:bg-stone-800 [&::-webkit-scrollbar-thumb]:bg-stone-400
                 `}
             >
                 {
