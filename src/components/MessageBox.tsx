@@ -6,7 +6,7 @@ import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "@/lib/db.ts";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {ChartBar} from "lucide-react";
+import {ChartBar, Ellipsis} from "lucide-react";
 
 export default function MessageBox(
     {
@@ -30,21 +30,35 @@ export default function MessageBox(
             )}
         >
             <Markdown>{message.content}</Markdown>
-            {
-                responseDetails &&
+            {message.role === "assistant" && <div className={"flex space-x-2 mt-2"}>
                 <Popover>
-                    <PopoverTrigger className={"mt-2"} asChild>
+                    <PopoverTrigger asChild>
                         <Button variant={"ghost"} size={"icon"}>
-                            <ChartBar/>
+                            <Ellipsis/>
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className={"text-sm space-y-2 flex flex-col w-fit"}>
-                        <p>Output tokens: {responseDetails.eval_count}</p>
-                        <p>Time elapsed: {(responseDetails.total_duration! / 10**9).toFixed(2)} s</p>
-                        <p>Tokens per second: {(responseDetails.eval_count! / responseDetails.eval_duration! * 10**9).toFixed(2)}</p>
+                        <p>Stuff</p>
                     </PopoverContent>
                 </Popover>
-            }
+                {
+                    responseDetails &&
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button variant={"ghost"} size={"icon"}>
+                                <ChartBar/>
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className={"text-sm space-y-2 flex flex-col w-fit"}>
+                            <p>Output tokens: {responseDetails.eval_count}</p>
+                            <p>Time elapsed: {(responseDetails.total_duration! / 10 ** 9).toFixed(2)} s</p>
+                            <p>Tokens per
+                                second: {(responseDetails.eval_count! / responseDetails.eval_duration! * 10 ** 9).toFixed(2)}</p>
+                        </PopoverContent>
+                    </Popover>
+                }
+            </div>}
+
         </div>
     );
 }
