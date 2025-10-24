@@ -27,17 +27,19 @@ export default function Chat() {
             await sendRequest(message);
         } catch (e) {
             console.log(e);
+            setPendingMessage(null);
         }
     }
 
     async function sendRequest(message: string) {
+        const model = "phi4-mini:latest";
         const context = (messages ?? []) as ModelMessage[];
         context.push({
             role: "user",
             content: message,
         });
         const requestBody: ModelRequest = {
-            model: "phi4-mini:latest",
+            model,
             messages: context
         };
         const response = await fetch("http://localhost:11434/api/chat", {
@@ -45,7 +47,7 @@ export default function Chat() {
             body: JSON.stringify(requestBody)
         });
         const streamReader = response.body?.getReader();
-        let intermediateResult;
+        let intermediateResult: ModelResponse;
         let result = "";
         do {
             const chunk = await streamReader?.read();
@@ -62,11 +64,25 @@ export default function Chat() {
             }
         } while (!intermediateResult!.done);
 
-        db.messages.add({
-            chatId: params.chatId!,
-            content: result,
-            role: "assistant"
+        db.transaction("rw", [db.responseDetails, db.messages], async tx => {
+            const messageId = await tx.messages.add({
+                chatId: params.chatId!,
+                content: result,
+                role: "assistant"
+            });
+            console.log(messageId);
+            tx.responseDetails.add({
+                messageId,
+                model,
+                total_duration: intermediateResult?.total_duration,
+                load_duration: intermediateResult?.load_duration,
+                prompt_eval_count: intermediateResult?.prompt_eval_count,
+                prompt_eval_duration: intermediateResult?.prompt_eval_duration,
+                eval_count: intermediateResult?.eval_count,
+                eval_duration: intermediateResult?.eval_duration
+            });
         });
+
         setPendingMessage(null);
     }
 
