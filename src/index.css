@@ -133,10 +133,10 @@
         @apply text-lg py-2;
     }
     pre {
-        @apply overflow-x-scroll bg-stone-900 p-2 m-1 rounded-2xl max-w-[50vw]
+        @apply overflow-x-scroll dark:bg-stone-900 bg-stone-300 p-2 m-1 rounded-2xl max-w-[50vw]
         [&::-webkit-scrollbar-thumb]:hover:bg-white [&::-webkit-scrollbar-thumb]:transition-all
         [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:rounded-full
-        [&::-webkit-scrollbar-track]:bg-stone-800 [&::-webkit-scrollbar-thumb]:rounded-full
-        [&::-webkit-scrollbar-thumb]:bg-stone-700;
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        dark:[&::-webkit-scrollbar-thumb]:bg-stone-700 [&::-webkit-scrollbar-thumb]:bg-stone-400
     }
 }
