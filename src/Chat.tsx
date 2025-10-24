@@ -61,6 +61,7 @@ export default function Chat() {
                 scrollAreaRef.current!.scrollTop = scrollAreaRef.current!.scrollHeight;
             }
         } while (!intermediateResult!.done);
+
         db.messages.add({
             chatId: params.chatId!,
             content: result,
@@ -77,7 +78,7 @@ export default function Chat() {
         if (messages?.length === 0) {
             sendMessage(searchParams.get("initial")!);
         }
-    }, [messages, searchParams, sendMessage]);
+    }, [messages]);
 
     return (
         <div className={"h-screen w-full flex flex-col justify-between p-2"}>
@@ -87,8 +88,9 @@ export default function Chat() {
                     w-2/3 max-w-2/3 p-4 max-h-[85vh] place-self-center space-y-2 wrap-anywhere overflow-y-scroll
                     [&::-webkit-scrollbar-thumb]:hover:bg-white [&::-webkit-scrollbar-thumb]:transition-all
                     [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full 
-                    [&::-webkit-scrollbar-track]:bg-stone-900 [&::-webkit-scrollbar-thumb]:rounded-full 
-                    [&::-webkit-scrollbar-thumb]:bg-stone-800
+                    [&::-webkit-scrollbar-track]:dark:bg-stone-900 [&::-webkit-scrollbar-track]:bg-stone-300
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:darK:bg-stone-800 [&::-webkit-scrollbar-thumb]:bg-stone-400
                 `}
             >
                 {
