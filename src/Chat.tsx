@@ -4,34 +4,18 @@ import {db} from "@/lib/db.ts";
 import {useLiveQuery} from "dexie-react-hooks";
 import MessageBox from "@/components/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 export default function Chat() {
     const [searchParams, _] = useSearchParams();
     const params = useParams<{chatId: string}>();
     const [pendingMessage, setPendingMessage] = useState<null | ModelMessage>(null);
-    const scrollAreaRef = useRef<null | HTMLDivElement>(null);
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(params.chatId!).toArray();
     }, [params, db.messages]);
 
-    async function sendMessage(message: string) {
-        try {
-            await db.messages.add({
-                chatId: params.chatId!,
-                role: "user",
-                content: message
-            });
-            scrollAreaRef.current!.scrollTop = scrollAreaRef.current!.scrollHeight;
-            await sendRequest(message);
-        } catch (e) {
-            console.log(e);
-            setPendingMessage(null);
-        }
-    }
-
-    async function sendRequest(message: string) {
+    const sendRequest = useCallback(async (message: string) => {
         const model = "phi4-mini:latest";
         const context = (messages ?? []) as ModelMessage[];
         context.push({
@@ -47,7 +31,7 @@ export default function Chat() {
             body: JSON.stringify(requestBody)
         });
         const streamReader = response.body?.getReader();
-        let intermediateResult: ModelResponse;
+        let intermediateResult: ModelResponse | undefined = undefined;
         let result = "";
         do {
             const chunk = await streamReader?.read();
@@ -60,7 +44,7 @@ export default function Chat() {
                     role: "assistant",
                     content: result
                 });
-                scrollAreaRef.current!.scrollTop = scrollAreaRef.current!.scrollHeight;
+                window.scrollBy({left: 0, top: window.innerHeight * 1000});
             }
         } while (!intermediateResult!.done);
 
@@ -84,38 +68,46 @@ export default function Chat() {
         });
 
         setPendingMessage(null);
-    }
+    }, [messages, params.chatId]);
+
+    const sendMessage = useCallback(async (message: string) => {
+        try {
+            await db.messages.add({
+                chatId: params.chatId!,
+                role: "user",
+                content: message
+            });
+            window.scrollBy({left: 0, top: window.innerHeight * 1000});
+            await sendRequest(message);
+        } catch (e) {
+            console.log(e);
+            setPendingMessage(null);
+        }
+    }, [params.chatId, sendRequest]);
 
     useEffect(() => {
-        scrollAreaRef.current!.scrollTop = scrollAreaRef.current!.scrollHeight;
+        window.scrollBy({left: 0, top: window.innerHeight * 1000});
     }, [messages]);
 
     useEffect(() => {
         if (messages?.length === 0) {
             sendMessage(searchParams.get("initial")!);
         }
-    }, [messages]);
+    }, [messages, searchParams, sendMessage]);
 
     return (
-        <div className={"h-screen w-full flex flex-col justify-between p-2"}>
+        <div className={"h-screen w-full flex flex-col justify-between"}>
             <div
-                ref={scrollAreaRef}
                 className={`
-                    w-2/3 max-w-2/3 p-4 max-h-[85vh] place-self-center space-y-2 wrap-anywhere overflow-y-scroll
-                    [&::-webkit-scrollbar-thumb]:hover:bg-white [&::-webkit-scrollbar-thumb]:transition-all
-                    [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full
-                    dark:[&::-webkit-scrollbar-track]:bg-stone-900 [&::-webkit-scrollbar-track]:bg-stone-300
-                    dark:[&::-webkit-scrollbar-thumb]:bg-stone-800 [&::-webkit-scrollbar-thumb]:bg-stone-400
+                    sm:w-2/3 sm:max-w-2/3 p-4 pb-[15vh] max-md:pt-[7vh] place-self-center space-y-2 wrap-anywhere
                 `}
             >
                 {
                     messages?.map(msg => <MessageBox key={msg.id} message={msg}/>)
                 }
-                {
-                    pendingMessage && <MessageBox message={pendingMessage}/>
-                }
+                {pendingMessage && <MessageBox message={pendingMessage}/>}
             </div>
-            <div className={"p-2 w-1/2 place-self-center fixed bottom-0"}>
+            <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0"}>
                 <ChatInput sendMessage={sendMessage} className={"place-self-center w-full"}/>
             </div>
         </div>
