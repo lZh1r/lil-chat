@@ -54,7 +54,6 @@ export default function Chat() {
                 content: result,
                 role: "assistant"
             });
-            console.log(messageId);
             tx.responseDetails.add({
                 messageId,
                 model,
