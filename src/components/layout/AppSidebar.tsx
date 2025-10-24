@@ -47,34 +47,34 @@ export default function AppSidebar() {
                 <AppSidebarTopGroup sidebarOpen={sidebarState.open}/>
                 <Collapsible defaultOpen className="group/collapsible">
                     <SidebarGroup className={"group-data-[state=collapsed]:hidden"}>
-                            <SidebarGroupContent>
-                                <SidebarMenu>
-                                    <CollapsibleTrigger asChild>
-                                        <SidebarMenuButton className={"cursor-pointer"}>
-                                            <span>All Chats</span>
-                                            <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                                        </SidebarMenuButton>
-                                    </CollapsibleTrigger>
-                                    <CollapsibleContent>
-                                        <SidebarMenuSub>
-                                            {
-                                                chats?.map(chat =>
-                                                    <SidebarMenuSubItem className={"flex space-x-2"} key={chat.id}>
-                                                        <SidebarMenuSubButton asChild>
-                                                            <Link to={`/chat/${chat.id}`}>
-                                                                <span className={"line-clamp-1 wrap-anywhere"}>
-                                                                    {chat.name}
-                                                                </span>
-                                                            </Link>
-                                                        </SidebarMenuSubButton>
-                                                        <DeleteChatDialog chat={chat}/>
-                                                    </SidebarMenuSubItem>
-                                                )
-                                            }
-                                        </SidebarMenuSub>
-                                    </CollapsibleContent>
-                                </SidebarMenu>
-                            </SidebarGroupContent>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                <CollapsibleTrigger asChild>
+                                    <SidebarMenuButton className={"cursor-pointer"}>
+                                        <span>All Chats</span>
+                                        <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                                    </SidebarMenuButton>
+                                </CollapsibleTrigger>
+                                <CollapsibleContent>
+                                    <SidebarMenuSub>
+                                        {
+                                            chats?.map(chat =>
+                                                <SidebarMenuSubItem className={"flex space-x-2"} key={chat.id}>
+                                                    <SidebarMenuSubButton asChild>
+                                                        <Link to={`/chat/${chat.id}`}>
+                                                            <span className={"line-clamp-1 wrap-anywhere"}>
+                                                                {chat.name}
+                                                            </span>
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
+                                                    <DeleteChatDialog chat={chat}/>
+                                                </SidebarMenuSubItem>
+                                            )
+                                        }
+                                    </SidebarMenuSub>
+                                </CollapsibleContent>
+                            </SidebarMenu>
+                        </SidebarGroupContent>
                     </SidebarGroup>
                 </Collapsible>
             </SidebarContent>
