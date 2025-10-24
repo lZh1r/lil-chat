@@ -23,6 +23,12 @@ export default function ChatInput(
     return (
         <InputGroup className={`${className} rounded-2xl pt-1`}>
             <InputGroupTextarea
+                className={`
+                    max-h-60
+                    [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full 
+                    [&::-webkit-scrollbar-track]:opacity-0 [&::-webkit-scrollbar-thumb]:rounded-full 
+                    [&::-webkit-scrollbar-thumb]:bg-stone-700
+                `}
                 id={"message-input"}
                 onKeyDown={(e) => {
                     if (e.shiftKey && e.key === "Enter") return;
