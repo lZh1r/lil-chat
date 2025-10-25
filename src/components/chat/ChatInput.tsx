@@ -1,5 +1,5 @@
 import {InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea} from "@/components/ui/input-group.tsx";
-import {ArrowUp, Plus} from "lucide-react";
+import {ArrowUp, Cloud, PcCase, Plus} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -68,13 +68,19 @@ export default function ChatInput(
                             <DropdownMenuRadioItem value={"auto"}>Auto</DropdownMenuRadioItem>
                             <DropdownMenuSeparator/>
                             <DropdownMenuGroup>
-                                <DropdownMenuLabel>Cloud Models</DropdownMenuLabel>
+                                <DropdownMenuLabel className={"flex space-x-2"}>
+                                    <Cloud/>
+                                    <span className={"place-self-center font-bold"}>Cloud Models</span>
+                                </DropdownMenuLabel>
                                 <DropdownMenuRadioItem value={"gpt-oss-120b"}>GPT OSS 120B</DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem value={"kimi-k2-1t"}>Kimi K2 1T</DropdownMenuRadioItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator/>
                             <DropdownMenuGroup>
-                                <DropdownMenuLabel>Local Models</DropdownMenuLabel>
+                                <DropdownMenuLabel className={"flex space-x-2"}>
+                                    <PcCase/>
+                                    <span className={"place-self-center font-bold"}>Local Models</span>
+                                </DropdownMenuLabel>
                                 <DropdownMenuRadioItem value={"mistral-7B"}>Mistral 7B</DropdownMenuRadioItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator/>
