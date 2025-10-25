@@ -3,7 +3,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.t
 import {Button} from "@/components/ui/button.tsx";
 import {Ellipsis} from "lucide-react";
 
-export default function MoreActionsButton() {
+export default function ChatMoreActionsButton() {
     return (
         <Popover>
             <Tooltip>

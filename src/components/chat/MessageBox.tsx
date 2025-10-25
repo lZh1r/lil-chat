@@ -3,7 +3,7 @@ import Markdown from "react-markdown";
 import type {ChatMessage, ModelMessage} from "@/lib/types.ts";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "@/lib/db.ts";
-import MoreActionsButton from "@/components/chat/MoreActionsButton.tsx";
+import ChatMoreActionsButton from "@/components/chat/ChatMoreActionsButton.tsx";
 import StatsButton from "@/components/chat/StatsButton.tsx";
 import RedoButton from "@/components/chat/RedoButton.tsx";
 import BranchButton from "@/components/chat/BranchButton.tsx";
@@ -32,7 +32,7 @@ export default function MessageBox(
         >
             <Markdown>{message.content}</Markdown>
             {message.role === "assistant" && <div className={"flex space-x-1 mt-2"}>
-                <MoreActionsButton/>
+                <ChatMoreActionsButton/>
                 <CopyButton text={message.content}/>
                 <RedoButton/>
                 <BranchButton/>
