@@ -1,30 +1,52 @@
 export type ModelMessage = Pick<ChatMessage, "role" | "content"> & {images?: string | null}
 
 export interface ModelRequest {
-    model: string,
+    model: string
     messages: ModelMessage[]
 }
 export interface ModelResponse {
-    model: string,
-    created_at: string,
-    message: ModelMessage,
-    done: boolean,
-    total_duration?: number,
-    load_duration?: number,
-    prompt_eval_count?: number,
-    prompt_eval_duration?: number,
-    eval_count?: number,
+    model: string
+    created_at: string
+    message: ModelMessage
+    done: boolean
+    total_duration?: number
+    load_duration?: number
+    prompt_eval_count?: number
+    prompt_eval_duration?: number
+    eval_count?: number
     eval_duration?: number
 }
 
 export interface Chat {
-    id: string,
-    name: string,
+    id: string
+    name: string
 }
 
 export interface ChatMessage {
-    id: number,
-    chatId: string,
-    role: "system" | "user" | "assistant" | "tool",
-    content: string,
+    id: number
+    chatId: string
+    role: "system" | "user" | "assistant" | "tool"
+    content: string
+}
+
+export type ParameterCount = `${number}${"M" | "B" | "T"}`
+
+export interface OllamaModelDetails {
+    parent_model?: string
+    format: string
+    family: string
+    families?: string[]
+    parameter_size: ParameterCount
+    quantization_level: string
+}
+
+export interface OllamaModel {
+    details: OllamaModelDetails
+    digest: string
+    model: string
+    modified_at: string
+    name: string
+    remote_host?: string
+    remote_model?: string
+    size: number
 }

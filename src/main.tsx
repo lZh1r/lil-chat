@@ -5,6 +5,7 @@ import {ThemeProvider} from "@/components/theme-provider.tsx";
 import Layout from "@/components/layout/Layout.tsx";
 import Home from "@/Home.tsx";
 import Chat from "@/Chat.tsx";
+import Models from "@/Models.tsx";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
                 loader: () => {
                     throw redirect("/");
                 }
+            },
+            {
+                path: "models",
+                Component: Models
             }
         ]
     }
