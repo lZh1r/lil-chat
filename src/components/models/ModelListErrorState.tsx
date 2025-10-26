@@ -1,4 +1,5 @@
 import {Button} from "@/components/ui/button.tsx";
+import {RefreshCw} from "lucide-react";
 
 export default function ModelListErrorState({retry}: {retry: () => void}) {
     return (
@@ -7,7 +8,8 @@ export default function ModelListErrorState({retry}: {retry: () => void}) {
             <p>Make sure Ollama is running (<code>ollama serve</code>) and try again.</p>
             <Button
                 onClick={retry}
-                className={"mt-2"}>
+                className={"mt-2 group"}>
+                <RefreshCw className={"group-active:rotate-360 transition-transform"}/>
                 Refresh
             </Button>
         </div>
