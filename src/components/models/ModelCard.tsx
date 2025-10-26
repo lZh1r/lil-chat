@@ -17,7 +17,7 @@ export default function ModelCard({model}: {model: OllamaModel}) {
                             Cloud Model
                         </TooltipContent>
                     </Tooltip>}
-                    <p className={"text-lg"}>{model.name}</p>
+                    <p className={"text-lg wrap-anywhere"}>{model.name}</p>
                     {/*<span className={"text-sm text-muted-foreground place-self-center"}>{model.model}</span>*/}
                 </div>
                 <ModelMoreActionsButton/>
