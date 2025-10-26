@@ -63,6 +63,7 @@ export default function Chat() {
             });
             tx.responseDetails.add({
                 messageId,
+                chatId: chatId!,
                 model,
                 total_duration: intermediateResult?.total_duration,
                 load_duration: intermediateResult?.load_duration,

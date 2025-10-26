@@ -26,6 +26,7 @@ export default function DeleteChatDialog(
     async function deleteChat(chatId: string) {
         await db.chats.delete(chatId);
         await db.messages.where("chatId").equals(chatId).delete();
+        await db.responseDetails.where("chatId").equals(chatId).delete();
         if (window.location.href.includes(chatId)) {
             navigate("/");
         }
