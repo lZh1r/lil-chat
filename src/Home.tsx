@@ -26,7 +26,7 @@ function Home() {
     return(
         <div className={"h-screen w-full flex flex-col justify-center space-y-5"}>
             <h1 className={"text-center text-3xl"}>Welcome back</h1>
-            <ChatInput inProgress={false} sendMessage={sendMessage} className={"place-self-center w-1/2"}/>
+            <ChatInput inProgress={false} sendMessage={sendMessage} className={"place-self-center max-md:w-4/5 md:w-2/3 lg:w-1/2"}/>
         </div>
     );
 }
