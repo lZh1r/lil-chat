@@ -1,8 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import type {OllamaModel} from "@/lib/types.ts";
 import ModelCard from "@/components/models/ModelCard.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Plus} from "lucide-react";
+import AddModelDialog from "@/components/models/AddModelDialog.tsx";
 
 export default function Models() {
     const [models, setModels] = useState<null | OllamaModel[]>(null);
@@ -21,12 +20,7 @@ export default function Models() {
             {
                 models && models.map((model) => <ModelCard key={model.model} model={model}/>)
             }
-            {
-                <Button className={"flex"} variant={"outline"}>
-                    <Plus/>
-                    Add more
-                </Button>
-            }
+            <AddModelDialog/>
         </div>
     );
 }

@@ -27,7 +27,7 @@ export default function MessageBox(
                 {"place-self-start": message.role === "assistant"},
                 {"place-self-center": message.role === "system"},
                 {"hidden": message.role === "tool"},
-                "text-foreground p-2 rounded-2xl w-fit max-w-[100%]"
+                "text-foreground p-2 rounded-2xl w-fit max-w-[100%] leading-8"
             )}
         >
             <Markdown>{message.content}</Markdown>
