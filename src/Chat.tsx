@@ -5,20 +5,25 @@ import {useLiveQuery} from "dexie-react-hooks";
 import MessageBox from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useState} from "react";
+import {currentModel} from "@/lib/atoms.ts";
+import {useAtomValue} from "jotai/react";
+
+const defaultModel = "phi4-mini:latest";
 
 export default function Chat() {
     const [searchParams, _] = useSearchParams();
-    const params = useParams<{chatId: string}>();
+    const {chatId} = useParams<{chatId: string}>();
     const [pendingMessage, setPendingMessage] = useState<null | ModelMessage>(null);
     const [inProgress, setInProgress] = useState(false);
+    const selectedModel = useAtomValue(currentModel);
 
     const messages = useLiveQuery(async () => {
-        return db.messages.where("chatId").equals(params.chatId!).toArray();
-    }, [params, db.messages]);
+        return db.messages.where("chatId").equals(chatId!).toArray();
+    }, [chatId, db.messages]);
 
     const sendRequest = useCallback(async (message: string) => {
         setInProgress(true);
-        const model = "phi4-mini:latest";
+        const model = selectedModel === "auto" ? defaultModel : selectedModel;
         const context = (messages ?? []) as ModelMessage[];
         context.push({
             role: "user",
@@ -52,7 +57,7 @@ export default function Chat() {
 
         db.transaction("rw", [db.responseDetails, db.messages], async tx => {
             const messageId = await tx.messages.add({
-                chatId: params.chatId!,
+                chatId: chatId!,
                 content: result,
                 role: "assistant"
             });
@@ -69,12 +74,12 @@ export default function Chat() {
         });
         setInProgress(false);
         setPendingMessage(null);
-    }, [messages, params.chatId]);
+    }, [selectedModel, messages]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {
             await db.messages.add({
-                chatId: params.chatId!,
+                chatId: chatId!,
                 role: "user",
                 content: message
             });
@@ -84,7 +89,7 @@ export default function Chat() {
             console.log(e);
             setPendingMessage(null);
         }
-    }, [params.chatId, sendRequest]);
+    }, [chatId, sendRequest]);
 
     useEffect(() => {
         window.scrollBy({left: 0, top: window.innerHeight * 1000});
