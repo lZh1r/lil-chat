@@ -1,17 +1,8 @@
 import {InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea} from "@/components/ui/input-group.tsx";
-import {ArrowUp, Cloud, Monitor, Plus} from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
+import {ArrowUp, Plus} from "lucide-react";
+
 import {useState} from "react";
+import ChatModelDropdown from "@/components/chat/ChatModelDropdown.tsx";
 
 export default function ChatInput(
     {
@@ -24,7 +15,6 @@ export default function ChatInput(
         sendMessage: (msg: string) => void
     }
 ) {
-    const [model, setModel] = useState("auto");
     const [message, setMessage] = useState("");
 
     return (
@@ -59,38 +49,7 @@ export default function ChatInput(
                 >
                     <Plus/>
                 </InputGroupButton>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <InputGroupButton>{model}</InputGroupButton>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuRadioGroup value={model} onValueChange={setModel}>
-                            <DropdownMenuRadioItem value={"auto"}>Auto</DropdownMenuRadioItem>
-                            <DropdownMenuSeparator/>
-                            <DropdownMenuGroup>
-                                <DropdownMenuLabel className={"flex space-x-2"}>
-                                    <Cloud/>
-                                    <span className={"place-self-center font-bold"}>Cloud Models</span>
-                                </DropdownMenuLabel>
-                                <DropdownMenuRadioItem value={"gpt-oss-120b"}>GPT OSS 120B</DropdownMenuRadioItem>
-                                <DropdownMenuRadioItem value={"kimi-k2-1t"}>Kimi K2 1T</DropdownMenuRadioItem>
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator/>
-                            <DropdownMenuGroup>
-                                <DropdownMenuLabel className={"flex space-x-2"}>
-                                    <Monitor className={"aspect-square"}/>
-                                    <span className={"place-self-center font-bold"}>Local Models</span>
-                                </DropdownMenuLabel>
-                                <DropdownMenuRadioItem value={"mistral-7B"}>Mistral 7B</DropdownMenuRadioItem>
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator/>
-                        </DropdownMenuRadioGroup>
-                        <DropdownMenuItem>
-                            <Plus/>
-                            Add more
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <ChatModelDropdown/>
                 <InputGroupButton
                     aria-label={"Send message"}
                     disabled={inProgress}
