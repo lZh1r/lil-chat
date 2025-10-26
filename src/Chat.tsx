@@ -74,7 +74,7 @@ export default function Chat() {
         });
         setInProgress(false);
         setPendingMessage(null);
-    }, [selectedModel, messages]);
+    }, [selectedModel, messages, chatId]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {
