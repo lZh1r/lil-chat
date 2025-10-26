@@ -7,38 +7,49 @@ import {
     DialogContent,
     DialogDescription,
     DialogFooter,
-    DialogTitle,
-    DialogTrigger
+    DialogTitle
 } from "@/components/ui/dialog.tsx";
 
-export default function AddModelDialog() {
+export default function AddModelDialog(
+    {
+        open,
+        setOpen
+    }: {
+        open: boolean,
+        setOpen: (state: boolean) => void
+    }
+) {
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button className={"flex"} variant={"outline"}>
-                    <Plus/>
-                    Add more
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogTitle>Add a new model</DialogTitle>
-                <DialogDescription>
-                    Pull a model from supported providers
-                </DialogDescription>
-                <label htmlFor={"modelId"}>Model name</label>
-                <Input id={"modelId"} placeholder={"i.e. llama3.2:latest"}/>
-                <DialogFooter className={"flex place-self-end space-x-2"}>
-                    <DialogClose asChild>
-                        <Button variant={"outline"}>
-                            Cancel
+        <>
+            <Button
+                onClick={() => setOpen(!open)}
+                className={"flex"}
+                variant={"outline"}
+            >
+                <Plus/>
+                Add more
+            </Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                    <DialogTitle>Add a new model</DialogTitle>
+                    <DialogDescription>
+                        Pull a model from supported providers
+                    </DialogDescription>
+                    <label htmlFor={"modelId"}>Model name</label>
+                    <Input id={"modelId"} placeholder={"i.e. llama3.2:latest"}/>
+                    <DialogFooter className={"flex place-self-end space-x-2"}>
+                        <DialogClose asChild>
+                            <Button variant={"outline"}>
+                                Cancel
+                            </Button>
+                        </DialogClose>
+                        <Button>
+                            Add
                         </Button>
-                    </DialogClose>
-                    <Button>
-                        Add
-                    </Button>
-                </DialogFooter>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
 
-            </DialogContent>
-        </Dialog>
     );
 }
