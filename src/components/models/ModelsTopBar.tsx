@@ -22,6 +22,7 @@ export default function ModelsTopBar(
         <div className={"flex space-x-4 p-2"}>
             <Tooltip>
                 <TooltipTrigger
+                    aria-label={"Add more"}
                     asChild
                     className={"group"}
                 >
@@ -39,6 +40,7 @@ export default function ModelsTopBar(
             <Tooltip>
                 <TooltipTrigger className={"group"} asChild>
                     <Button
+                        aria-label={"Refresh"}
                         onClick={refresh}
                         variant={"outline"}
                         size={"icon"}
