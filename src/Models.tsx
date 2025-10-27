@@ -22,7 +22,7 @@ export default function Models() {
             {
                 error ? <ModelListErrorState retry={refresh}/>
                     : models && models.filter(m => m.name.includes(searchQuery))
-                    .map((model) => <ModelCard key={model.model} model={model}/>)
+                    .map((model) => <ModelCard key={model.model} refresh={refresh} model={model}/>)
             }
             {!error && <AddModelDialog open={dialogOpen} setOpen={setDialogOpen}/>}
         </div>

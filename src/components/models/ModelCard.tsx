@@ -4,7 +4,15 @@ import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.t
 import {Cloud} from "lucide-react";
 import ModelMoreActionsButton from "@/components/models/ModelMoreActionsButton.tsx";
 
-export default function ModelCard({model}: {model: OllamaModel}) {
+export default function ModelCard(
+    {
+        model,
+        refresh
+    }: {
+        model: OllamaModel,
+        refresh: () => void
+    }
+) {
     return (
         <Card className={"p-4"}>
             <CardHeader className={"p-0 flex justify-between"}>
@@ -20,7 +28,7 @@ export default function ModelCard({model}: {model: OllamaModel}) {
                     <p className={"text-lg wrap-anywhere"}>{model.name}</p>
                     {/*<span className={"text-sm text-muted-foreground place-self-center"}>{model.model}</span>*/}
                 </div>
-                <ModelMoreActionsButton/>
+                <ModelMoreActionsButton refresh={refresh} model={model}/>
             </CardHeader>
             <CardContent className={"font-light flex flex-col space-y-2 text-muted-foreground"}>
                 <span>Parameters: {model.details.parameter_size}</span>
