@@ -60,8 +60,7 @@ export default function DeleteChatDialog(
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={() => {
-                            deleteChat(chat.id);
-                            setOpen(s => !s);
+                            deleteChat(chat.id).then(() => setOpen(s => !s));
                         }}
                     >
                         Delete

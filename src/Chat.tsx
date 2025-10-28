@@ -7,6 +7,7 @@ import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {currentModel} from "@/lib/atoms.ts";
 import {useAtomValue} from "jotai/react";
+import useScroll from "@/hooks/useScroll.ts";
 
 const defaultModel = "phi4-mini:latest";
 
@@ -17,20 +18,28 @@ export default function Chat() {
     const selectedModel = useAtomValue(currentModel);
     const [error, setError] = useState<null | string>(null);
     const currentMessageIdRef = useRef<null | number>(null);
+    const scroll = useScroll();
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(chatId!).toArray();
     }, [chatId, db.messages]);
 
-    const sendRequest = useCallback(async (message: string) => {
+    const sendRequest = useCallback(async (message: string, messageId?: number) => {
         setError(null);
         setInProgress(true);
         const model = selectedModel === "auto" ? defaultModel : selectedModel;
-        const context = (messages ?? []) as ModelMessage[];
-        context.push({
-            role: "user",
-            content: message,
-        });
+        let context = (messages ?? []) as ModelMessage[];
+        if (!messageId) {
+            context.push({
+                role: "user",
+                content: message,
+            });
+        } else {
+            const target = await db.messages.get(messageId);
+            const index = messages?.findIndex(msg => msg.id === target?.id);
+            context = context.slice(0, index);
+        }
+
         const requestBody: ModelRequest = {
             model,
             messages: context
@@ -41,13 +50,16 @@ export default function Chat() {
                 method: "POST",
                 body: JSON.stringify(requestBody)
             });
-            currentMessageIdRef.current = await db.messages.add(
-                {
-                    chatId: chatId!,
-                    content: "",
-                    role: "assistant"
-                }
-            );
+            if (!messageId) {
+                currentMessageIdRef.current = await db.messages.add(
+                    {
+                        chatId: chatId!,
+                        content: "",
+                        role: "assistant"
+                    }
+                );
+            } else currentMessageIdRef.current = messageId;
+
             const streamReader = response.body?.getReader();
             let intermediateResult: ModelResponse | undefined = undefined;
             let result = "";
@@ -64,11 +76,11 @@ export default function Chat() {
                         role: "assistant",
                         content: result
                     });
-                    window.scrollBy({left: 0, top: window.innerHeight * 1000});
+                    scroll();
                 }
             } while (!intermediateResult!.done);
 
-            db.responseDetails.add({
+            await db.responseDetails.put({
                     messageId: currentMessageIdRef.current,
                     chatId: chatId!,
                     model,
@@ -89,7 +101,7 @@ export default function Chat() {
         }
 
         setInProgress(false);
-    }, [selectedModel, messages, chatId]);
+    }, [selectedModel, messages, chatId, scroll]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {
@@ -106,8 +118,8 @@ export default function Chat() {
     }, [chatId, sendRequest]);
 
     useEffect(() => {
-        window.scrollBy({left: 0, top: window.innerHeight * 1000});
-    }, [messages]);
+        scroll();
+    }, [messages, scroll]);
 
     useEffect(() => {
         if (messages?.length === 0) {
@@ -123,7 +135,7 @@ export default function Chat() {
                 `}
             >
                 {
-                    messages?.map(msg => <MessageBox key={msg.id} message={msg}/>)
+                    messages?.map(msg => <MessageBox key={msg.id} sendRequest={sendRequest} message={msg}/>)
                 }
                 {/*{pendingMessage && <MessageBox message={pendingMessage}/>}*/}
                 {error && <p className={"text-muted-foreground"}>Something went wrong...</p>}

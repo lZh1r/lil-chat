@@ -11,9 +11,11 @@ import CopyButton from "@/components/chat/CopyButton.tsx";
 
 export default function MessageBox(
     {
-        message
+        message,
+        sendRequest
     }: {
-        message: ChatMessage | ModelMessage
+        message: ChatMessage | ModelMessage,
+        sendRequest: (message: string, messageId?: number) => void
     }
 ) {
     const responseDetails = useLiveQuery(async () => {
@@ -34,7 +36,7 @@ export default function MessageBox(
             {message.role === "assistant" && <div className={"flex space-x-1 mt-2"}>
                 <ChatMoreActionsButton/>
                 <CopyButton text={message.content}/>
-                <RedoButton/>
+                <RedoButton handler={() => sendRequest(message.content, responseDetails?.messageId)}/>
                 <BranchButton/>
                 {responseDetails && <StatsButton responseDetails={responseDetails!}/>}
             </div>}
