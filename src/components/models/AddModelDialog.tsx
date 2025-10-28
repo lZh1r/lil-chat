@@ -48,7 +48,6 @@ export default function AddModelDialog(
             do {
                 chunk = await readerRef.current.read();
                 const decoded = new TextDecoder().decode(chunk?.value);
-                console.log(decoded);
                 const split = decoded.split("\n").filter(e => e.length !== 0);
                 setResult(JSON.parse(split[split.length - 1]));
                 if (decoded.includes("error") || decoded.includes("success")) break;
