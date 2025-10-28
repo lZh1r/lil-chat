@@ -20,6 +20,7 @@ export default function StatsButton({responseDetails}: {responseDetails: Omit<Mo
                 </TooltipContent>
             </Tooltip>
             <PopoverContent className={"text-sm space-y-2 flex flex-col w-fit"}>
+                <p>Model: {responseDetails.model}</p>
                 <p>Output tokens: {responseDetails.eval_count}</p>
                 <p>Time elapsed: {(responseDetails.total_duration! / 10 ** 9).toFixed(2)} s</p>
                 <p>Tokens per second: {(responseDetails.eval_count! / responseDetails.eval_duration! * 10 ** 9).toFixed(2)}</p>
