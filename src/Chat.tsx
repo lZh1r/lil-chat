@@ -4,7 +4,7 @@ import {db} from "@/lib/db.ts";
 import {useLiveQuery} from "dexie-react-hooks";
 import MessageBox from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {currentModel} from "@/lib/atoms.ts";
 import {useAtomValue} from "jotai/react";
 
@@ -13,10 +13,10 @@ const defaultModel = "phi4-mini:latest";
 export default function Chat() {
     const [searchParams, _] = useSearchParams();
     const {chatId} = useParams<{chatId: string}>();
-    const [pendingMessage, setPendingMessage] = useState<null | ModelMessage>(null);
     const [inProgress, setInProgress] = useState(false);
     const selectedModel = useAtomValue(currentModel);
     const [error, setError] = useState<null | string>(null);
+    const currentMessageIdRef = useRef<null | number>(null);
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(chatId!).toArray();
@@ -41,6 +41,13 @@ export default function Chat() {
                 method: "POST",
                 body: JSON.stringify(requestBody)
             });
+            currentMessageIdRef.current = await db.messages.add(
+                {
+                    chatId: chatId!,
+                    content: "",
+                    role: "assistant"
+                }
+            );
             const streamReader = response.body?.getReader();
             let intermediateResult: ModelResponse | undefined = undefined;
             let result = "";
@@ -51,7 +58,9 @@ export default function Chat() {
                 for (const i of decodedArray) {
                     intermediateResult = JSON.parse(i) as ModelResponse;
                     result += intermediateResult.message.content;
-                    setPendingMessage({
+                    await db.messages.put({
+                        id: currentMessageIdRef.current,
+                        chatId: chatId!,
                         role: "assistant",
                         content: result
                     });
@@ -59,14 +68,8 @@ export default function Chat() {
                 }
             } while (!intermediateResult!.done);
 
-            db.transaction("rw", [db.responseDetails, db.messages], async tx => {
-                const messageId = await tx.messages.add({
-                    chatId: chatId!,
-                    content: result,
-                    role: "assistant"
-                });
-                tx.responseDetails.add({
-                    messageId,
+            db.responseDetails.add({
+                    messageId: currentMessageIdRef.current,
                     chatId: chatId!,
                     model,
                     total_duration: intermediateResult?.total_duration,
@@ -75,15 +78,17 @@ export default function Chat() {
                     prompt_eval_duration: intermediateResult?.prompt_eval_duration,
                     eval_count: intermediateResult?.eval_count,
                     eval_duration: intermediateResult?.eval_duration
-                });
             });
         } catch (e) {
             console.log(e);
             setError((e as Error).message);
+            if (currentMessageIdRef.current) {
+                db.messages.delete(currentMessageIdRef.current);
+                currentMessageIdRef.current = null;
+            }
         }
 
         setInProgress(false);
-        setPendingMessage(null);
     }, [selectedModel, messages, chatId]);
 
     const sendMessage = useCallback(async (message: string) => {
@@ -97,7 +102,6 @@ export default function Chat() {
             await sendRequest(message);
         } catch (e) {
             console.log(e);
-            setPendingMessage(null);
         }
     }, [chatId, sendRequest]);
 
@@ -121,7 +125,7 @@ export default function Chat() {
                 {
                     messages?.map(msg => <MessageBox key={msg.id} message={msg}/>)
                 }
-                {pendingMessage && <MessageBox message={pendingMessage}/>}
+                {/*{pendingMessage && <MessageBox message={pendingMessage}/>}*/}
                 {error && <p className={"text-muted-foreground"}>Something went wrong...</p>}
             </div>
             <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0"}>
