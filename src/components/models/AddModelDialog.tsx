@@ -12,10 +12,11 @@ import {
 import {useRef, useState} from "react";
 
 interface PullResult {
-    status: string
+    status?: string
     digest?: string
     total?: number
     completed?: number
+    error?: string
 }
 
 export default function AddModelDialog(
@@ -85,7 +86,10 @@ export default function AddModelDialog(
                     {
                         result &&
                         <div>
-                            <p>Status: {result.status}</p>
+                            {
+                                result.status ? <p>Status: {result.status}</p>
+                                : result.error && <p className={"text-destructive"}>Error: {result.error}</p>
+                            }
                             {
                                 result.total &&
                                 <p className={"flex space-x-2"}>
