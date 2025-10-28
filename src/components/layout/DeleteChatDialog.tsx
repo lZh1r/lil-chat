@@ -11,14 +11,17 @@ import {
 import {db} from "@/lib/db.ts";
 import {useNavigate} from "react-router";
 import type {Chat} from "@/lib/types.ts";
-import {SidebarMenuAction} from "@/components/ui/sidebar.tsx";
 import {Trash} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import * as React from "react";
 
 export default function DeleteChatDialog(
     {
-        chat
+        chat,
+        setOpen
     }: {
-        chat: Chat
+        chat: Chat,
+        setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     }
 ) {
     const navigate = useNavigate();
@@ -35,11 +38,12 @@ export default function DeleteChatDialog(
     return(
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <SidebarMenuAction
-                    aria-label={"Delete chat"}
-                    className={"p-1 w-fit h-fit static place-self-center"}>
-                    <Trash/>
-                </SidebarMenuAction>
+                <Button
+                    variant={"ghost"}
+                    className={"p-2 space-x-2 w-fit text-destructive text-sm"}
+                >
+                    <Trash/> <p>Delete chat</p>
+                </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogTitle className={"flex line-clamp-2"}>
@@ -49,8 +53,19 @@ export default function DeleteChatDialog(
                     This action cannot be undone.
                 </AlertDialogDescription>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Close</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteChat(chat.id)}>Delete</AlertDialogAction>
+                    <AlertDialogCancel
+                        onClick={() => setOpen(s => !s)}
+                    >
+                        Close
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={() => {
+                            deleteChat(chat.id);
+                            setOpen(s => !s);
+                        }}
+                    >
+                        Delete
+                    </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

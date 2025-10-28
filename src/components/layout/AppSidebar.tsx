@@ -8,8 +8,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem,
     useSidebar,
 } from "@/components/ui/sidebar.tsx";
 import {ChevronRight} from "lucide-react";
@@ -18,8 +16,7 @@ import AppSidebarTopGroup from "@/components/layout/AppSidebarTopGroup.tsx";
 import {useEffect} from "react";
 import {useLiveQuery} from "dexie-react-hooks";
 import {db} from "@/lib/db.ts";
-import {Link} from "react-router";
-import DeleteChatDialog from "@/components/layout/DeleteChatDialog.tsx";
+import ChatSelectButton from "@/components/layout/ChatSelectButton.tsx";
 
 export default function AppSidebar() {
 
@@ -59,16 +56,7 @@ export default function AppSidebar() {
                                     <SidebarMenuSub>
                                         {
                                             chats?.map(chat =>
-                                                <SidebarMenuSubItem className={"flex space-x-2"} key={chat.id}>
-                                                    <SidebarMenuSubButton asChild>
-                                                        <Link to={`/chat/${chat.id}`}>
-                                                            <span className={"line-clamp-1 wrap-anywhere"}>
-                                                                {chat.name}
-                                                            </span>
-                                                        </Link>
-                                                    </SidebarMenuSubButton>
-                                                    <DeleteChatDialog chat={chat}/>
-                                                </SidebarMenuSubItem>
+                                                <ChatSelectButton key={chat.id} chat={chat}/>
                                             )
                                         }
                                     </SidebarMenuSub>
