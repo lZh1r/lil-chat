@@ -18,7 +18,7 @@ export default function Chat() {
     const selectedModel = useAtomValue(currentModel);
     const [error, setError] = useState<null | string>(null);
     const currentMessageIdRef = useRef<null | number>(null);
-    const scroll = useScroll();
+    const [scroll, setActive] = useScroll();
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(chatId!).toArray();
@@ -76,7 +76,7 @@ export default function Chat() {
                         role: "assistant",
                         content: result
                     });
-                    scroll();
+                    scroll(true);
                 }
             } while (!intermediateResult!.done);
 
@@ -110,16 +110,17 @@ export default function Chat() {
                 role: "user",
                 content: message
             });
-            window.scrollBy({left: 0, top: window.innerHeight * 1000});
+            setActive(true);
+            scroll();
             await sendRequest(message);
         } catch (e) {
             console.log(e);
         }
-    }, [chatId, sendRequest]);
+    }, [chatId, sendRequest, scroll, setActive]);
 
     useEffect(() => {
-        scroll();
-    }, [messages, scroll]);
+        scroll(true);
+    }, [messages, scroll, setActive]);
 
     useEffect(() => {
         if (messages?.length === 0) {
@@ -140,8 +141,12 @@ export default function Chat() {
                 {/*{pendingMessage && <MessageBox message={pendingMessage}/>}*/}
                 {error && <p className={"text-muted-foreground"}>Something went wrong...</p>}
             </div>
-            <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0"}>
-                <ChatInput inProgress={inProgress} sendMessage={sendMessage} className={"place-self-center w-full"}/>
+            <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0 space-y-2 pointer-events-none"}>
+                <ChatInput
+                    inProgress={inProgress}
+                    sendMessage={sendMessage}
+                    className={"place-self-center w-full pointer-events-auto"}
+                />
             </div>
         </div>
     );
