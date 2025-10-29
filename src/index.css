@@ -143,4 +143,10 @@
         [&::-webkit-scrollbar-thumb]:rounded-full
         dark:[&::-webkit-scrollbar-thumb]:bg-stone-700 [&::-webkit-scrollbar-thumb]:bg-stone-400
     }
+    .basic-scroll {
+        @apply [&::-webkit-scrollbar-thumb]:hover:bg-white [&::-webkit-scrollbar-thumb]:transition-all
+        [&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full
+        dark:[&::-webkit-scrollbar-track]:bg-stone-800 [&::-webkit-scrollbar-track]:bg-stone-300
+        dark:[&::-webkit-scrollbar-thumb]:bg-stone-700 [&::-webkit-scrollbar-thumb]:bg-stone-400;
+    }
 }

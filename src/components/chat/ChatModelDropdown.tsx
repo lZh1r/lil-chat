@@ -45,7 +45,7 @@ export default function ChatModelDropdown() {
             <DropdownMenuTrigger asChild>
                 <InputGroupButton>{model}</InputGroupButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className={"basic-scroll"}>
                 {
                     error ? <ModelDropdownErrorState retry={refresh}/>
                         : <DropdownMenuRadioGroup value={model} onValueChange={setModel}>
