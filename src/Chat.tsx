@@ -138,10 +138,12 @@ export default function Chat() {
                 {
                     messages?.map(msg => <MessageBox key={msg.id} sendRequest={sendRequest} message={msg}/>)
                 }
-                {/*{pendingMessage && <MessageBox message={pendingMessage}/>}*/}
                 {error && <p className={"text-muted-foreground"}>Something went wrong...</p>}
             </div>
             <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0 space-y-2 pointer-events-none"}>
+                {
+                    // !true && <GoDownButton setActive={setActive}/>
+                }
                 <ChatInput
                     inProgress={inProgress}
                     sendMessage={sendMessage}
