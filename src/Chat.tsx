@@ -2,7 +2,7 @@ import {useParams, useSearchParams} from "react-router";
 import ChatInput from "@/components/chat/ChatInput.tsx";
 import {db} from "@/lib/db.ts";
 import {useLiveQuery} from "dexie-react-hooks";
-import MessageBox from "@/components/chat/MessageBox.tsx";
+import {MessageBox} from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {currentModel} from "@/lib/atoms.ts";
@@ -81,15 +81,15 @@ export default function Chat() {
             } while (!intermediateResult!.done);
 
             await db.responseDetails.put({
-                    messageId: currentMessageIdRef.current,
-                    chatId: chatId!,
-                    model,
-                    total_duration: intermediateResult?.total_duration,
-                    load_duration: intermediateResult?.load_duration,
-                    prompt_eval_count: intermediateResult?.prompt_eval_count,
-                    prompt_eval_duration: intermediateResult?.prompt_eval_duration,
-                    eval_count: intermediateResult?.eval_count,
-                    eval_duration: intermediateResult?.eval_duration
+                messageId: currentMessageIdRef.current,
+                chatId: chatId!,
+                model,
+                total_duration: intermediateResult?.total_duration,
+                load_duration: intermediateResult?.load_duration,
+                prompt_eval_count: intermediateResult?.prompt_eval_count,
+                prompt_eval_duration: intermediateResult?.prompt_eval_duration,
+                eval_count: intermediateResult?.eval_count,
+                eval_duration: intermediateResult?.eval_duration
             });
         } catch (e) {
             console.log(e);

@@ -8,8 +8,9 @@ import StatsButton from "@/components/chat/StatsButton.tsx";
 import RedoButton from "@/components/chat/RedoButton.tsx";
 import BranchButton from "@/components/chat/BranchButton.tsx";
 import CopyButton from "@/components/chat/CopyButton.tsx";
+import * as React from "react";
 
-export default function MessageBox(
+export const MessageBox = React.memo(function MessageBox(
     {
         message,
         sendRequest
@@ -43,4 +44,4 @@ export default function MessageBox(
 
         </div>
     );
-}
+});
