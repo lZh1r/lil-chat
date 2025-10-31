@@ -5,14 +5,14 @@ import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.t
 export default function RedoButton({handler}: {handler: () => void}) {
     return (
         <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger className={"group"} asChild>
                 <Button
                     onClick={handler}
                     aria-label={"Redo this message"}
                     variant={"ghost"}
                     size={"icon"}
                 >
-                    <RefreshCw/>
+                    <RefreshCw className={"group-active:rotate-360 transition-transform ease-in-out"}/>
                 </Button>
             </TooltipTrigger>
             <TooltipContent>

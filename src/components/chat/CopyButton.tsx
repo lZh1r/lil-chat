@@ -20,7 +20,7 @@ export default function CopyButton({text}: {text: string}) {
                         }}
                         variant={"ghost"}
                         size={"icon"}>
-                        <ClipboardCopy className={`transition-transform ease-in-out duration-200 ${copied && "rotate-180"}`}/>
+                        <ClipboardCopy className={`transition-transform ease-in-out duration-200 ${copied && "rotate-20 scale-125"}`}/>
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>

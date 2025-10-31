@@ -7,10 +7,10 @@ export default function ChatMoreActionsButton() {
     return (
         <Popover>
             <Tooltip>
-                <TooltipTrigger asChild>
+                <TooltipTrigger className={"group"} asChild>
                     <PopoverTrigger asChild>
                         <Button aria-label={"Message actions"} variant={"ghost"} size={"icon"}>
-                            <Ellipsis/>
+                            <Ellipsis className={"group-active:scale-120 transition-transform"}/>
                         </Button>
                     </PopoverTrigger>
                 </TooltipTrigger>
