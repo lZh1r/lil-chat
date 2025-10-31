@@ -50,6 +50,7 @@ export default function Chat() {
                 method: "POST",
                 body: JSON.stringify(requestBody)
             });
+            if (!response.ok) throw new Error(response.statusText);
             if (!messageId) {
                 currentMessageIdRef.current = await db.messages.add(
                     {
@@ -69,7 +70,8 @@ export default function Chat() {
                 const decodedArray = decoded.split("\n").filter(s => s.length !== 0);
                 for (const i of decodedArray) {
                     intermediateResult = JSON.parse(i) as ModelResponse;
-                    result += intermediateResult.message.content;
+                    if (!intermediateResult) break;
+                    result += intermediateResult.message?.content ?? "";
                     await db.messages.put({
                         id: currentMessageIdRef.current,
                         chatId: chatId!,
@@ -95,7 +97,9 @@ export default function Chat() {
             console.log(e);
             setError((e as Error).message);
             if (currentMessageIdRef.current) {
-                db.messages.delete(currentMessageIdRef.current);
+                try {
+                    db.messages.delete(currentMessageIdRef.current);
+                } catch (e) {console.log(e)}
                 currentMessageIdRef.current = null;
             }
         }
@@ -129,10 +133,10 @@ export default function Chat() {
     }, [messages, searchParams, sendMessage]);
 
     return (
-        <div className={"h-screen w-full flex flex-col justify-between"}>
+        <div className={"h-screen w-full flex sm:w-2/3 sm:max-w-2/3 mx-auto flex-col justify-between"}>
             <div
                 className={`
-                    sm:w-2/3 sm:max-w-2/3 p-4 pb-[15vh] max-md:pt-[7vh] place-self-center space-y-2 wrap-anywhere
+                    p-4 pb-[15vh] w-full max-md:pt-[7vh] place-self-center space-y-2 wrap-anywhere
                 `}
             >
                 {
@@ -140,7 +144,7 @@ export default function Chat() {
                 }
                 {error && <p className={"text-muted-foreground"}>Something went wrong...</p>}
             </div>
-            <div className={"p-2 md:w-1/2 max-md:w-4/5 place-self-center fixed bottom-0 space-y-2 pointer-events-none"}>
+            <div className={"p-2 w-full place-self-center sticky bottom-0 space-y-2 pointer-events-none"}>
                 {
                     // !true && <GoDownButton setActive={setActive}/>
                 }
