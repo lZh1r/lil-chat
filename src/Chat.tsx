@@ -133,10 +133,10 @@ export default function Chat() {
     }, [messages, searchParams, sendMessage]);
 
     return (
-        <div className={"h-screen w-full flex sm:w-2/3 sm:max-w-2/3 mx-auto flex-col justify-between"}>
+        <div className={"h-screen w-full flex sm:w-2/3 sm:max-w-2/3 md:w-1/2 md:max-w-1/2 mx-auto flex-col justify-between"}>
             <div
                 className={`
-                    p-4 pb-[15vh] w-full max-md:pt-[7vh] place-self-center space-y-2 wrap-anywhere
+                    p-4 w-full max-md:pt-[7vh] place-self-center space-y-2 wrap-anywhere
                 `}
             >
                 {
