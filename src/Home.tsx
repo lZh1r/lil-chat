@@ -13,7 +13,7 @@ function Home() {
             while (await db.chats.get({id: chatId})) chatId = crypto.randomUUID();
             await db.chats.add({
                 id: chatId,
-                name: `Chat ${chatId}`
+                name: message.split(" ").slice(0, 6).join(" ")
             });
 
             navigate(`/chat/${chatId}?initial=${message}`);
