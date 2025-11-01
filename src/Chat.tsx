@@ -2,7 +2,7 @@ import {useParams, useSearchParams} from "react-router";
 import ChatInput from "@/components/chat/ChatInput.tsx";
 import {db} from "@/lib/db.ts";
 import {useLiveQuery} from "dexie-react-hooks";
-import {MessageBox} from "@/components/chat/MessageBox.tsx";
+import MessageBox from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {currentModel, inProgressAtom} from "@/lib/atoms.ts";
@@ -24,7 +24,8 @@ export default function Chat() {
         return db.messages.where("chatId").equals(chatId!).toArray();
     }, [chatId, db.messages]);
 
-    const sendRequest = useCallback(async (message: string, messageId?: number) => {
+    const sendRequest = useCallback(
+        async (message: string, messageId?: number, edit?: boolean) => {
         setError(null);
         setInProgress(true);
         const model = selectedModel === "auto" ? defaultModel : selectedModel;
@@ -35,9 +36,16 @@ export default function Chat() {
                 content: message,
             });
         } else {
+            const add = edit ? 1 : 0;
             const target = await db.messages.get(messageId);
             const index = messages?.findIndex(msg => msg.id === target?.id);
-            context = context.slice(0, index);
+            if (edit) {
+                context = context.map((msg, i) => {
+                    if (i === index) return target as ModelMessage;
+                    return msg;
+                });
+            }
+            context = context.slice(0, (index ?? 0) + add);
         }
 
         const requestBody: ModelRequest = {
@@ -59,7 +67,10 @@ export default function Chat() {
                         role: "assistant"
                     }
                 );
-            } else currentMessageIdRef.current = messageId;
+            } else {
+                const add = edit ? 1 : 0;
+                currentMessageIdRef.current = messageId + add;
+            }
 
             const streamReader = response.body?.getReader();
             let intermediateResult: ModelResponse | undefined = undefined;
@@ -107,13 +118,13 @@ export default function Chat() {
             if (currentMessageIdRef.current) {
                 try {
                     db.messages.delete(currentMessageIdRef.current);
-                } catch (e) {console.log(e)}
+                } catch (e) {console.log(e);}
                 currentMessageIdRef.current = null;
             }
         }
 
         setInProgress(false);
-    }, [selectedModel, messages, chatId, scroll]);
+    }, [selectedModel, messages, chatId, setInProgress]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {
@@ -130,9 +141,9 @@ export default function Chat() {
         }
     }, [chatId, sendRequest, scroll, setActive]);
 
-    useEffect(() => {
-        scroll(true);
-    }, [messages, scroll, setActive]);
+    // useEffect(() => {
+    //     scroll(true);
+    // }, [messages, scroll, setActive]);
 
     useEffect(() => {
         if (messages?.length === 0) {
