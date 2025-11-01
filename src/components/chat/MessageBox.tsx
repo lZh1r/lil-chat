@@ -9,6 +9,7 @@ import RedoButton from "@/components/chat/RedoButton.tsx";
 import BranchButton from "@/components/chat/BranchButton.tsx";
 import CopyButton from "@/components/chat/CopyButton.tsx";
 import * as React from "react";
+import LoadingState from "@/components/LoadingState.tsx";
 
 export const MessageBox = React.memo(function MessageBox(
     {
@@ -33,7 +34,9 @@ export const MessageBox = React.memo(function MessageBox(
                 "text-foreground p-2 rounded-2xl w-fit max-w-[100%] leading-8"
             )}
         >
-            <Markdown>{message.content}</Markdown>
+            {
+                message.content.length === 0 ? <LoadingState/> : <Markdown>{message.content}</Markdown>
+            }
             {message.role === "assistant" && <div className={"flex space-x-1 mt-2"}>
                 <ChatMoreActionsButton/>
                 <CopyButton text={message.content}/>
