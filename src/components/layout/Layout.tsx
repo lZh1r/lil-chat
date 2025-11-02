@@ -3,7 +3,6 @@ import {Button} from "@/components/ui/button.tsx";
 import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import AppSidebar from "@/components/layout/AppSidebar.tsx";
 import {Outlet} from "react-router";
-import ProfileMenu from "@/components/layout/ProfileMenu.tsx";
 import {useState} from "react";
 
 export default function Layout() {
@@ -19,7 +18,6 @@ export default function Layout() {
                 </Button>
                 <div className={"fixed right-0 p-3 flex space-x-3"}>
                     <ModeToggle/>
-                    <ProfileMenu/>
                 </div>
                 <Outlet/>
             </SidebarProvider>
