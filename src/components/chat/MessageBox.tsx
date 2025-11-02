@@ -81,7 +81,7 @@ export default function MessageBox (
                     </div>
             }
             {message.role === "assistant" && <div className={"flex space-x-1 mt-2"}>
-                <ChatMoreActionsButton/>
+                <ChatMoreActionsButton id={responseDetails?.messageId}/>
                 <CopyButton text={message.content}/>
                 <RedoButton handler={() => sendRequest(message.content, responseDetails?.messageId ?? 0)}/>
                 <BranchButton/>
