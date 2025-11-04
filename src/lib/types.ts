@@ -4,6 +4,7 @@ export interface ModelRequest {
     model: string
     messages: ModelMessage[]
     options?: Partial<RequestOptions>
+    think?: boolean | "high" | "medium" | "low"
 }
 export interface ModelResponse {
     model: string

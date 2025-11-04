@@ -5,7 +5,7 @@ import {useLiveQuery} from "dexie-react-hooks";
 import MessageBox from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useRef, useState} from "react";
-import {currentModel, inProgressAtom, requestOptionsAtom} from "@/lib/atoms.ts";
+import {currentModel, inProgressAtom, reasoningAtom, requestOptionsAtom} from "@/lib/atoms.ts";
 import {useAtom, useAtomValue} from "jotai/react";
 import useScroll from "@/hooks/useScroll.ts";
 
@@ -20,6 +20,7 @@ export default function Chat() {
     const currentMessageIdRef = useRef<null | number>(null);
     const [scroll, setActive] = useScroll();
     const requestOptions = useAtomValue(requestOptionsAtom);
+    const reasoning = useAtomValue(reasoningAtom);
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(chatId!).toArray();
@@ -52,7 +53,8 @@ export default function Chat() {
         const requestBody: ModelRequest = {
             model,
             messages: context,
-            options: requestOptions
+            options: requestOptions,
+            think: reasoning
         };
 
         try {
@@ -116,7 +118,11 @@ export default function Chat() {
             });
         } catch (e) {
             console.log(e);
-            setError((e as Error).message);
+            if (String(e).includes("does not support thinking")) {
+                setError("This model does not support reasoning.");
+            } else {
+                setError("Something went wrong...");
+            }
             if (currentMessageIdRef.current) {
                 try {
                     db.messages.delete(currentMessageIdRef.current);
@@ -126,7 +132,7 @@ export default function Chat() {
         }
 
         setInProgress(false);
-    }, [selectedModel, messages, chatId, setInProgress, requestOptions]);
+    }, [selectedModel, messages, chatId, setInProgress, requestOptions, reasoning]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {
@@ -163,7 +169,7 @@ export default function Chat() {
                 {
                     messages?.map(msg => <MessageBox key={msg.id} sendRequest={sendRequest} message={msg}/>)
                 }
-                {error && <p className={"text-muted-foreground"}>Something went wrong...</p>}
+                {error && <p className={"text-muted-foreground"}>{error}</p>}
             </div>
             <div className={"p-2 w-full place-self-center sticky bottom-0 space-y-2 pointer-events-none"}>
                 {
