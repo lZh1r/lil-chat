@@ -3,6 +3,7 @@ import {ArrowUp, Plus} from "lucide-react";
 
 import {useState} from "react";
 import ChatModelDropdown from "@/components/chat/ChatModelDropdown.tsx";
+import ChatInputOptions from "@/components/chat/ChatInputOptions.tsx";
 
 export default function ChatInput(
     {
@@ -50,21 +51,25 @@ export default function ChatInput(
                     <Plus/>
                 </InputGroupButton>
                 <ChatModelDropdown/>
-                <InputGroupButton
-                    aria-label={"Send message"}
-                    disabled={inProgress}
-                    size={"icon-sm"}
-                    variant={"default"}
-                    className={"rounded-full ml-auto"}
-                    onClick={() => {
-                        if (message.trim().length > 0) {
-                            sendMessage(message);
-                            setMessage("");
-                        }
-                    }}
-                >
-                    <ArrowUp/>
-                </InputGroupButton>
+                <div className={"ml-auto flex space-x-3"}>
+                    <ChatInputOptions/>
+                    <InputGroupButton
+                        aria-label={"Send message"}
+                        disabled={inProgress}
+                        size={"icon-sm"}
+                        variant={"default"}
+                        className={"rounded-full"}
+                        onClick={() => {
+                            if (message.trim().length > 0) {
+                                sendMessage(message);
+                                setMessage("");
+                            }
+                        }}
+                    >
+                        <ArrowUp/>
+                    </InputGroupButton>
+                </div>
+
             </InputGroupAddon>
         </InputGroup>
     );

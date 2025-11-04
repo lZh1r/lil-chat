@@ -5,7 +5,7 @@ import {useLiveQuery} from "dexie-react-hooks";
 import MessageBox from "@/components/chat/MessageBox.tsx";
 import type {ModelMessage, ModelRequest, ModelResponse} from "@/lib/types.ts";
 import {useCallback, useEffect, useRef, useState} from "react";
-import {currentModel, inProgressAtom} from "@/lib/atoms.ts";
+import {currentModel, inProgressAtom, requestOptionsAtom} from "@/lib/atoms.ts";
 import {useAtom, useAtomValue} from "jotai/react";
 import useScroll from "@/hooks/useScroll.ts";
 
@@ -19,6 +19,7 @@ export default function Chat() {
     const [error, setError] = useState<null | string>(null);
     const currentMessageIdRef = useRef<null | number>(null);
     const [scroll, setActive] = useScroll();
+    const requestOptions = useAtomValue(requestOptionsAtom);
 
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(chatId!).toArray();
@@ -50,7 +51,8 @@ export default function Chat() {
 
         const requestBody: ModelRequest = {
             model,
-            messages: context
+            messages: context,
+            options: requestOptions
         };
 
         try {
@@ -58,7 +60,7 @@ export default function Chat() {
                 method: "POST",
                 body: JSON.stringify(requestBody)
             });
-            if (!response.ok) throw new Error(response.statusText);
+            if (!response.ok) throw new Error(await response.text());
             if (!messageId) {
                 currentMessageIdRef.current = await db.messages.add(
                     {
@@ -124,7 +126,7 @@ export default function Chat() {
         }
 
         setInProgress(false);
-    }, [selectedModel, messages, chatId, setInProgress]);
+    }, [selectedModel, messages, chatId, setInProgress, requestOptions]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {

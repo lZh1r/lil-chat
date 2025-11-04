@@ -3,6 +3,7 @@ export type ModelMessage = Pick<ChatMessage, "role" | "content"> & {images?: str
 export interface ModelRequest {
     model: string
     messages: ModelMessage[]
+    options?: Partial<RequestOptions>
 }
 export interface ModelResponse {
     model: string
@@ -49,4 +50,15 @@ export interface OllamaModel {
     remote_host?: string
     remote_model?: string
     size: number
+}
+
+export interface RequestOptions {
+    seed?: number
+    temperature?: number
+    top_k?: number
+    top_p?: number
+    min_p?: number
+    stop?: string[]
+    num_ctx?: number
+    num_predict?: number
 }
