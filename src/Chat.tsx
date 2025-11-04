@@ -22,9 +22,21 @@ export default function Chat() {
     const requestOptions = useAtomValue(requestOptionsAtom);
     const reasoning = useAtomValue(reasoningAtom);
 
+    const chat = useLiveQuery(async () => {
+        return db.chats.get(chatId!);
+    }, [chatId]);
+
     const messages = useLiveQuery(async () => {
         return db.messages.where("chatId").equals(chatId!).toArray();
     }, [chatId, db.messages]);
+
+    const setSystemPrompt = useCallback(async (prompt: string) => {
+        db.chats.put({
+            id: chatId,
+            name: chat!.name,
+            system_prompt: prompt
+        });
+    }, [chat, chatId]);
 
     const sendRequest = useCallback(
         async (message: string, messageId?: number, edit?: boolean) => {
@@ -49,6 +61,11 @@ export default function Chat() {
             }
             context = context.slice(0, (index ?? 0) + add);
         }
+
+        context = [{
+            role: "system",
+            content: chat?.system_prompt ?? ""
+        }, ...context];
 
         const requestBody: ModelRequest = {
             model,
@@ -132,7 +149,7 @@ export default function Chat() {
         }
 
         setInProgress(false);
-    }, [selectedModel, messages, chatId, setInProgress, requestOptions, reasoning]);
+    }, [selectedModel, messages, chatId, setInProgress, requestOptions, reasoning, chat]);
 
     const sendMessage = useCallback(async (message: string) => {
         try {
@@ -176,6 +193,8 @@ export default function Chat() {
                     // !true && <GoDownButton setActive={setActive}/>
                 }
                 <ChatInput
+                    setSystemPrompt={setSystemPrompt}
+                    systemPrompt={chat?.system_prompt}
                     inProgress={inProgress}
                     sendMessage={sendMessage}
                     className={"place-self-center w-full pointer-events-auto"}

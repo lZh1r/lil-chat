@@ -7,16 +7,21 @@ import ChatInputOptions from "@/components/chat/ChatInputOptions.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
 import {useSetAtom} from "jotai/react";
 import {reasoningAtom} from "@/lib/atoms.ts";
+import ChatInputSystemPrompt from "@/components/chat/ChatInputSystemPrompt.tsx";
 
 export default function ChatInput(
     {
         className,
         inProgress,
-        sendMessage
+        sendMessage,
+        systemPrompt,
+        setSystemPrompt
     }: {
         className: string,
         inProgress: boolean,
         sendMessage: (msg: string) => void
+        systemPrompt: string | undefined
+        setSystemPrompt: (prompt: string) => void
     }
 ) {
     const [message, setMessage] = useState("");
@@ -66,6 +71,10 @@ export default function ChatInput(
                     </div>
                 </div>
                 <div className={"ml-auto flex space-x-3 place-self-end"}>
+                    <ChatInputSystemPrompt
+                        systemPrompt={systemPrompt}
+                        setSystemPrompt={setSystemPrompt}
+                    />
                     <ChatInputOptions/>
                     <InputGroupButton
                         aria-label={"Send message"}

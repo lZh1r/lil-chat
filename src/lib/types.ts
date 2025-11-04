@@ -22,6 +22,7 @@ export interface ModelResponse {
 export interface Chat {
     id: string
     name: string
+    system_prompt: string | undefined
 }
 
 export interface ChatMessage {

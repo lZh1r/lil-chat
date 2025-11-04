@@ -17,7 +17,7 @@ export const db = new Dexie("ChatDatabase") as Dexie & {
 };
 
 db.version(1).stores({
-    chats: "id, name",
+    chats: "id, name, system_prompt",
     messages: "++id, chatId, role, content",
     responseDetails: "messageId, chatId, model, total_duration, load_duration, prompt_eval_count, prompt_eval_duration, eval_count"
 });
