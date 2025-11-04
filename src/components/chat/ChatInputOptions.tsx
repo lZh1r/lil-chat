@@ -75,9 +75,19 @@ export default function ChatInputOptions() {
                 <form className={"flex flex-col space-y-4"} onSubmit={form.handleSubmit(handleSubmit)}>
                     <div className={"overflow-y-scroll max-h-60 basic-scroll p-1 pr-4"}>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Seed
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Seed
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Random seed used for reproducible outputs
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
@@ -90,9 +100,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Temperature
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Temperature
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Controls randomness in generation (higher = more random)
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
@@ -105,9 +125,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Top k
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Top K
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Limits LLM's choice to the K options with the highest probability
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
@@ -120,9 +150,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Top p
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Top P
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Finds the smallest possible set of options whose cumulative probability does not exceed P
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
@@ -135,9 +175,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Min p
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Min P
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Minimum threshold for a token to be considered by the LLM
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
@@ -150,9 +200,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Stop Sequence
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Stop sequence
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    A string or several strings separated by commas that make LLM stop when encountered
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 spellCheck={"false"}
                                 type={"text"}
@@ -164,9 +224,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Context length
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Context length
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Maximum context length in tokens
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
@@ -178,9 +248,19 @@ export default function ChatInputOptions() {
                             </p>
                         </div>
                         <div className={"flex-col flex space-y-2"}>
-                            <label>
-                                Response length
-                            </label>
+                            <Tooltip>
+                                <TooltipTrigger
+                                    onClick={(e) => e.preventDefault()}
+                                    className={"w-fit"}
+                                >
+                                    <label>
+                                        Response length
+                                    </label>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    Maximum response length in tokens
+                                </TooltipContent>
+                            </Tooltip>
                             <Input
                                 onScroll={(e) => e.preventDefault()}
                                 type={"number"}
