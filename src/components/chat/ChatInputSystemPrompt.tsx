@@ -33,6 +33,7 @@ export default function ChatInputSystemPrompt(
                 <TooltipTrigger asChild>
                     <DialogTrigger asChild>
                         <Button
+                            aria-label={"System prompt"}
                             className={"place-self-center"}
                             size={"icon-sm"}
                             variant={"outline"}

@@ -54,7 +54,7 @@ export default function ChatInputOptions() {
                 <TooltipTrigger asChild>
                     <DialogTrigger asChild>
                         <InputGroupButton
-                            aria-label={"Send message"}
+                            aria-label={"Request options"}
                             size={"icon-sm"}
                             variant={"outline"}
                             className={"rounded-full"}
